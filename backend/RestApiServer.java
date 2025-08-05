@@ -20,7 +20,7 @@ public class RestApiServer {
     private static final String DB_PASSWORD = "raju"; // Update with your MySQL password
     
     public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
+        HttpServer server = HttpServer.create(new InetSocketAddress(0000), 0);
         
         System.out.println("🚀 Starting Pet Adoption API Server...");
         
