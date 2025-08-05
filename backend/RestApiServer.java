@@ -20,7 +20,8 @@ public class RestApiServer {
     private static final String DB_PASSWORD = "raju"; // Update with your MySQL password
     
     public static void main(String[] args) throws IOException {
-        HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 8080), 0);
+       HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", 0000), 0);
+
 
         
         System.out.println("🚀 Starting Pet Adoption API Server...");
@@ -62,7 +63,7 @@ public class RestApiServer {
         server.setExecutor(null);
         server.start();
         System.out.println("🌟 Pet Adoption API Server started on port 8080");
-        System.out.println("📱 Frontend can now connect to: http://localhost:8080");
+        
         System.out.println("🔍 Debug logging is enabled for troubleshooting");
         System.out.println("🔐 Admin login: username='admin', password='admin123'");
     }
