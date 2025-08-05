@@ -1,0 +1,7 @@
+services:
+  - type: web
+    name: pet-shop
+    env: docker
+    plan: free
+    branch: main
+    dockerfilePath: ./Dockerfile
