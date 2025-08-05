@@ -2,15 +2,16 @@ FROM openjdk:17-jdk-slim
 
 WORKDIR /app
 
-# Copy all files
-COPY backend/ ./backend/
-COPY backend/lib ./backend/lib/
+# Copy all Java files and libraries
+COPY backend/Main.java .
+COPY backend/RestApiServer.java .
+COPY backend/lib ./lib
 
 # Compile Java files
-RUN javac -cp "./backend/lib/*" backend/Main.java backend/RestApiServer.java
+RUN javac -cp "lib/*" Main.java RestApiServer.java
 
-# Expose the port your server runs on
+# Expose port
 EXPOSE 8080
 
-# Run the server
-CMD ["java", "-cp", "./backend:./backend/lib/*", "backend.RestApiServer"]
+# Run the Java server
+CMD ["java", "-cp", ".:lib/*", "RestApiServer"]
