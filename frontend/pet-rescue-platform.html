@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Rescue Platform: Pet Shop & Abandoned Animal Report</title>
+    <style>
+        body { font-family: Arial, sans-serif; margin: 20px; background-color: #f9f9f9; color: #333; }
+        header { background-color: #4CAF50; color: white; padding: 10px 20px; text-align: center; }
+        h2 { color: #4CAF50; }
+        .container { display: flex; justify-content: space-between; gap: 20px; }
+        .shop, .report { background: white; padding: 20px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.1); flex: 1; }
+        label { display: block; margin: 10px 0 5px; font-weight: bold; }
+        input, select, textarea { width: 100%; padding: 8px; margin-bottom: 10px; border: 1px solid #ccc; border-radius: 4px; }
+        button { background-color: #4CAF50; color: white; border: none; padding: 10px 20px; border-radius: 4px; cursor: pointer; }
+        button:hover { background-color: #45a049; }
+    </style>
+</head>
+<body>
+
+<header>
+    <h1>Pet Rescue Platform</h1>
+</header>
+
+<div class="container">
+
+    <section class="shop">
+        <h2>Pet Shop</h2>
+        <form id="shopForm">
+            <label for="productName">Product Name:</label>
+            <input type="text" id="productName" name="productName" placeholder="E.g., Dog Food">
+
+            <label for="category">Category:</label>
+            <select id="category" name="category">
+                <option value="food">Food</option>
+                <option value="toys">Toys</option>
+                <option value="accessories">Accessories</option>
+                <option value="health">Health</option>
+            </select>
+
+            <label for="price">Price ($):</label>
+            <input type="number" id="price" name="price" step="0.01" placeholder="E.g., 19.99">
+
+            <label for="stock">Stock Quantity:</label>
+            <input type="number" id="stock" name="stock" placeholder="E.g., 50">
+
+            <label for="description">Description:</label>
+            <textarea id="description" name="description" rows="3" placeholder="E.g., High quality dog food"></textarea>
+
+            <button type="submit">Add Product</button>
+        </form>
+    </section>
+
+    <section class="report">
+        <h2>Abandoned Animal Report</h2>
+        <form id="reportForm">
+            <label for="reportDate">Report Date:</label>
+            <input type="date" id="reportDate" name="reportDate" required>
+
+            <label for="reporterName">Reporter Name:</label>
+            <input type="text" id="reporterName" name="reporterName" placeholder="Your name" required>
+
+            <label for="reporterContact">Reporter Contact:</label>
+            <input type="text" id="reporterContact" name="reporterContact" placeholder="Phone or email" required>
+
+            <label for="animalType">Animal Type:</label>
+            <input type="text" id="animalType" name="animalType" placeholder="E.g., Dog" required>
+
+            <label for="breed">Breed:</label>
+            <input type="text" id="breed" name="breed" placeholder="E.g., Mixed, Labrador">
+
+            <label for="colorMarkings">Color & Markings:</label>
+            <input type="text" id="colorMarkings" name="colorMarkings" placeholder="E.g., Brown with white patch">
+
+            <label for="locationFound">Location Found:</label>
+            <input type="text" id="locationFound" name="locationFound" placeholder="E.g., 123 Elm Street" required>
+
+            <label for="condition">Condition:</label>
+            <textarea id="condition" name="condition" rows="3" placeholder="Describe animal condition" required></textarea>
+
+            <label for="urgencyLevel">Urgency Level:</label>
+            <select id="urgencyLevel" name="urgencyLevel" required>
+                <option value="low">Low</option>
+                <option value="medium">Medium</option>
+                <option value="high">High</option>
+            </select>
+
+            <label for="additionalNotes">Additional Notes:</label>
+            <textarea id="additionalNotes" name="additionalNotes" rows="2" placeholder="Any other relevant information"></textarea>
+
+            <button type="submit">Submit Report</button>
+        </form>
+    </section>
+
+</div>
+
+</body>
+</html>

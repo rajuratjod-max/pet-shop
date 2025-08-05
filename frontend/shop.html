@@ -1,0 +1,450 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop - PawsConnect</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PawsConnect</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="adoption.html">Adoption</a></li>
+                <li><a href="shop.html" class="active">Shop</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="customer.html">My Account</a></li>
+            </ul>
+            <div class="cart-icon" onclick="toggleCart()">
+                <span>🛒</span>
+                <span id="cartCount" class="cart-count">0</span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <h1>Pet Products Shop</h1>
+                <p>Everything your pet needs in one place</p>
+            </div>
+        </section>
+
+        <section class="shop-filters">
+            <div class="container">
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>Category:</label>
+                        <select id="categoryFilter">
+                            <option value="">All Categories</option>
+                            <option value="food">Food</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="toys">Toys</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="care">Care</option>
+                            <option value="furniture">Furniture</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Price Range:</label>
+                        <select id="priceFilter">
+                            <option value="">Any Price</option>
+                            <option value="0-25">$0 - $25</option>
+                            <option value="25-50">$25 - $50</option>
+                            <option value="50-100">$50 - $100</option>
+                            <option value="100+">$100+</option>
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <input type="text" id="searchProducts" placeholder="Search products...">
+                    </div>
+                    <button onclick="refreshProductsList()" class="btn btn-secondary">🔄 Refresh</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="shop-grid">
+            <div class="container">
+                <div class="products-grid" id="productsGrid">
+                    <!-- Products will be loaded from database -->
+                    <div class="loading-message">
+                        <p>Loading products from database...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cartSidebar" class="cart-sidebar">
+        <div class="cart-header">
+            <h3>Shopping Cart</h3>
+            <span class="close-cart" onclick="toggleCart()">&times;</span>
+        </div>
+        <div class="cart-items" id="cartItems">
+            <!-- Cart items will be populated here -->
+        </div>
+        <div class="cart-footer">
+            <div class="cart-total">
+                <strong>Total: $<span id="cartTotal">0.00</span></strong>
+            </div>
+            <button class="btn btn-primary" onclick="goToCheckout()">Checkout</button>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <span class="logo-icon">🐾</span>
+                        <span class="logo-text">PawsConnect</span>
+                    </div>
+                    <p>Creating loving connections between pets and families since 2020.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="adoption.html">Adoption</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>📍 123 Pet Street, Animal City</p>
+                    <p>📞 (555) 123-PAWS</p>
+                    <p>✉️ info@pawsconnect.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PawsConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        let cart = [];
+        let cartTotal = 0;
+
+        // Database Integration for Products
+        function loadProductsFromDatabase() {
+            console.log('🛍️ Loading products from database...');
+            
+            const productsGrid = document.getElementById('productsGrid');
+            productsGrid.innerHTML = '<div class="loading-message"><p>Loading products from database...</p></div>';
+            
+            fetch('http://localhost:8080/api/products')
+                .then(response => {
+                    console.log('📡 API Response status:', response.status);
+                    return response.json();
+                })
+                .then(products => {
+                    console.log('✅ Loaded products:', products);
+                    console.log('📊 Number of products:', products.length);
+                    displayProductsInShop(products);
+                })
+                .catch(error => {
+                    console.error('❌ Error loading products:', error);
+                    showErrorMessage('Error loading products from database');
+                });
+        }
+
+        function displayProductsInShop(products) {
+            const productsGrid = document.getElementById('productsGrid');
+            if (!productsGrid) return;
+            
+            if (products.length === 0) {
+                productsGrid.innerHTML = `
+                    <div class="no-products-message">
+                        <div class="empty-icon">📦</div>
+                        <h3>No products available</h3>
+                        <p>Check back soon for new arrivals!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            productsGrid.innerHTML = products.map(product => `
+                <div class="product-card" data-category="${product.type}" data-price="${product.cost}">
+                    <img src="https://via.placeholder.com/280x250/ff6b9d/FFFFFF?text=${encodeURIComponent(product.product_name)}" alt="${product.product_name}">
+                    <div class="product-info">
+                        <h3>${product.product_name}</h3>
+                        <p class="product-category">${product.type}</p>
+                        <div class="product-price">$${parseFloat(product.cost).toFixed(2)}</div>
+                        <p class="product-description">For ${product.used_by_pet}</p>
+                        <p class="product-stock">Stock: ${product.quantity}</p>
+                        <div class="product-actions">
+                            ${product.quantity > 0 ? 
+                                `<button class="btn btn-primary add-to-cart" onclick="addToCartFromDB('${product.product_id}', '${product.product_name}', ${product.cost})">Add to Cart</button>` :
+                                `<button class="btn btn-disabled" disabled>Out of Stock</button>`
+                            }
+                            <button class="btn btn-outline view-details" onclick="viewProductDetails('${product.product_id}')">View Details</button>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            
+            console.log('✅ Products displayed successfully');
+        }
+
+        function refreshProductsList() {
+            loadProductsFromDatabase();
+        }
+
+        function showErrorMessage(message) {
+            const productsGrid = document.getElementById('productsGrid');
+            if (productsGrid) {
+                productsGrid.innerHTML = `
+                    <div class="error-message">
+                        <div class="error-icon">❌</div>
+                        <h3>Error Loading Products</h3>
+                        <p>${message}</p>
+                        <button onclick="loadProductsFromDatabase()" class="btn btn-primary">Try Again</button>
+                    </div>
+                `;
+            }
+        }
+
+        function addToCartFromDB(productId, productName, price) {
+            const customerId = localStorage.getItem('customer_id');
+            if (!customerId) {
+                alert('Please register first to buy products');
+                return;
+            }
+            
+            // Add to local cart first
+            addToCart(productId, productName, price);
+            
+            // Also record in database when checkout happens
+            const cartItems = JSON.parse(localStorage.getItem('cart_for_db') || '[]');
+            cartItems.push({
+                product_id: productId,
+                product_name: productName,
+                price: price,
+                quantity: 1,
+                customer_id: customerId
+            });
+            localStorage.setItem('cart_for_db', JSON.stringify(cartItems));
+        }
+
+        function addToCart(id, name, price) {
+            const existingItem = cart.find(item => item.id === id);
+            if (existingItem) {
+                existingItem.quantity += 1;
+            } else {
+                cart.push({ id, name, price, quantity: 1 });
+            }
+            updateCart();
+            showNotification(`${name} added to cart!`);
+        }
+
+        function updateCart() {
+            const cartCount = document.getElementById('cartCount');
+            const cartItems = document.getElementById('cartItems');
+            const cartTotalElement = document.getElementById('cartTotal');
+            
+            const totalItems = cart.reduce((sum, item) => sum + item.quantity, 0);
+            cartCount.textContent = totalItems;
+            
+            cartTotal = cart.reduce((sum, item) => sum + (item.price * item.quantity), 0);
+            cartTotalElement.textContent = cartTotal.toFixed(2);
+            
+            cartItems.innerHTML = cart.map(item => `
+                <div class="cart-item">
+                    <span>${item.name}</span>
+                    <div class="item-controls">
+                        <span>$${item.price} x ${item.quantity}</span>
+                        <button onclick="removeFromCart('${item.id}')">×</button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function removeFromCart(id) {
+            cart = cart.filter(item => item.id !== id);
+            updateCart();
+        }
+
+        function toggleCart() {
+            const cartSidebar = document.getElementById('cartSidebar');
+            cartSidebar.classList.toggle('open');
+        }
+
+        function goToCheckout() {
+            if (cart.length === 0) {
+                alert('Your cart is empty!');
+                return;
+            }
+            localStorage.setItem('cart', JSON.stringify(cart));
+            window.location.href = 'checkout.html';
+        }
+
+        function viewProductDetails(id) {
+            alert(`Viewing details for product ${id}`);
+        }
+
+        function showNotification(message) {
+            const notification = document.createElement('div');
+            notification.className = 'notification';
+            notification.textContent = message;
+            notification.style.cssText = `
+                position: fixed;
+                top: 20px;
+                right: 20px;
+                background: #d63384;
+                color: white;
+                padding: 1rem 2rem;
+                border-radius: 10px;
+                z-index: 10000;
+                animation: slideIn 0.3s ease;
+            `;
+            document.body.appendChild(notification);
+            setTimeout(() => notification.remove(), 3000);
+        }
+
+        // Filter functionality
+        document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+        document.getElementById('priceFilter').addEventListener('change', filterProducts);
+        document.getElementById('searchProducts').addEventListener('input', filterProducts);
+
+        function filterProducts() {
+            const category = document.getElementById('categoryFilter').value.toLowerCase();
+            const priceRange = document.getElementById('priceFilter').value;
+            const searchTerm = document.getElementById('searchProducts').value.toLowerCase();
+            
+            const products = document.querySelectorAll('.product-card');
+            
+            products.forEach(product => {
+                const productCategory = product.dataset.category.toLowerCase();
+                const productPrice = parseFloat(product.dataset.price);
+                const productName = product.querySelector('h3').textContent.toLowerCase();
+                
+                let show = true;
+                
+                if (category && !productCategory.includes(category)) show = false;
+                if (priceRange) {
+                    const [min, max] = priceRange.split('-').map(p => parseFloat(p.replace('+', '')));
+                    if (priceRange.includes('+')) {
+                        if (productPrice < min) show = false;
+                    } else {
+                        if (productPrice < min || productPrice > max) show = false;
+                    }
+                }
+                if (searchTerm && !productName.includes(searchTerm)) show = false;
+                
+                product.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        // Load products when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Shop page loaded, loading products from database...');
+            loadProductsFromDatabase();
+        });
+    </script>
+
+    <style>
+        .loading-message, .no-products-message, .error-message {
+            text-align: center;
+            padding: 3rem;
+            grid-column: 1 / -1;
+        }
+
+        .empty-icon, .error-icon {
+            font-size: 3rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-disabled {
+            background: #ccc;
+            color: #666;
+            cursor: not-allowed;
+        }
+
+        .cart-sidebar {
+            position: fixed;
+            top: 0;
+            right: -400px;
+            width: 400px;
+            height: 100vh;
+            background: white;
+            box-shadow: -5px 0 15px rgba(0,0,0,0.1);
+            transition: right 0.3s ease;
+            z-index: 2000;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .cart-sidebar.open {
+            right: 0;
+        }
+
+        .cart-header {
+            padding: 1rem;
+            border-bottom: 1px solid #f8f9fa;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .cart-items {
+            flex: 1;
+            padding: 1rem;
+            overflow-y: auto;
+        }
+
+        .cart-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0.5rem 0;
+            border-bottom: 1px solid #f8f9fa;
+        }
+
+        .cart-footer {
+            padding: 1rem;
+            border-top: 1px solid #f8f9fa;
+        }
+
+        .cart-total {
+            margin-bottom: 1rem;
+            text-align: center;
+            font-size: 1.2rem;
+        }
+
+        .cart-count {
+            background: #d63384;
+            color: white;
+            border-radius: 50%;
+            padding: 0.2rem 0.5rem;
+            font-size: 0.8rem;
+            position: relative;
+            top: -5px;
+        }
+
+        @keyframes slideIn {
+            from {
+                transform: translateX(100%);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+    </style>
+</body>
+</html>

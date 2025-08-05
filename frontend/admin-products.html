@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Management - PawsConnect Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <nav class="admin-navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PawsConnect Admin</span>
+            </div>
+            <div class="admin-user">
+                <span>Welcome, Admin</span>
+                <a href="index.html" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="admin.html">Dashboard</a></li>
+                <li><a href="admin-pets.html">Pet Management</a></li>
+                <li><a href="admin-products.html" class="active">Product Management</a></li>
+                <li><a href="admin-customers.html">Customer Management</a></li>
+                <li><a href="admin-orders.html">Order Management</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1>Product Management</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="refreshProductsList()">🔄 Refresh</button>
+                    <button class="btn btn-primary" onclick="openAddProductModal()">Add New Product</button>
+                </div>
+            </div>
+
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label>Filter by Category:</label>
+                    <select id="categoryFilter">
+                        <option value="">All Categories</option>
+                        <option value="food">Food</option>
+                        <option value="accessories">Accessories</option>
+                        <option value="toys">Toys</option>
+                        <option value="healthcare">Healthcare</option>
+                        <option value="care">Care</option>
+                        <option value="furniture">Furniture</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <input type="text" id="searchProducts" placeholder="Search products...">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table" id="productsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Used By</th>
+                            <th>Price</th>
+                            <th>Stock</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <!-- Products will be loaded from database -->
+                        <tr>
+                            <td colspan="8" style="text-align: center; padding: 2rem;">
+                                Loading products from database...
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Product Modal -->
+    <div id="addProductModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddProductModal()">&times;</span>
+            <h2>Add New Product</h2>
+            <form id="addProductForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productName">Product Name *</label>
+                        <input type="text" id="productName" name="productName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productCategory">Category *</label>
+                        <select id="productCategory" name="productCategory" required>
+                            <option value="">Select Category</option>
+                            <option value="food">Food</option>
+                            <option value="accessories">Accessories</option>
+                            <option value="toys">Toys</option>
+                            <option value="healthcare">Healthcare</option>
+                            <option value="care">Care</option>
+                            <option value="furniture">Furniture</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="productPrice">Price ($) *</label>
+                        <input type="number" step="0.01" id="productPrice" name="productPrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="productStock">Stock Quantity *</label>
+                        <input type="number" id="productStock" name="productStock" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="usedByPet">Used By Pet</label>
+                    <select id="usedByPet" name="usedByPet">
+                        <option value="both">Both Dogs & Cats</option>
+                        <option value="dog">Dogs</option>
+                        <option value="cat">Cats</option>
+                        <option value="bird">Birds</option>
+                        <option value="rabbit">Rabbits</option>
+                        <option value="fish">Fish</option>
+                        <option value="hamster">Hamsters</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="productDescription">Description</label>
+                    <textarea id="productDescription" name="productDescription" rows="4"></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Add Product</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAddProductModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script>
+        // Database Integration for Products
+        function refreshProductsList() {
+            console.log('🔄 Refreshing products list...');
+            
+            const tbody = document.querySelector('#productsTable tbody');
+            tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem;">Loading products...</td></tr>';
+            
+            fetch('http://localhost:8080/api/products')
+                .then(response => {
+                    console.log('📡 API Response status:', response.status);
+                    return response.json();
+                })
+                .then(products => {
+                    console.log('✅ Received products:', products);
+                    displayProductsInAdmin(products);
+                })
+                .catch(error => {
+                    console.error('❌ Error fetching products:', error);
+                    tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem; color: red;">Error loading products</td></tr>';
+                });
+        }
+
+        function displayProductsInAdmin(products) {
+            const tbody = document.querySelector('#productsTable tbody');
+            if (!tbody) return;
+            
+            if (products.length === 0) {
+                tbody.innerHTML = '<tr><td colspan="8" style="text-align: center; padding: 2rem;">No products found</td></tr>';
+                return;
+            }
+            
+            tbody.innerHTML = products.map(product => `
+                <tr>
+                    <td>${product.product_id}</td>
+                    <td>${product.product_name}</td>
+                    <td>${product.type}</td>
+                    <td>${product.used_by_pet}</td>
+                    <td>$${product.cost}</td>
+                    <td>${product.quantity}</td>
+                    <td><span class="status ${product.quantity > 0 ? 'available' : 'out-of-stock'}">${product.quantity > 0 ? 'In Stock' : 'Out of Stock'}</span></td>
+                    <td>
+                        <button class="btn-small btn-edit" onclick="editProduct('${product.product_id}')">Edit</button>
+                        <button class="btn-small btn-delete" onclick="deleteProduct('${product.product_id}')">Delete</button>
+                    </td>
+                </tr>
+            `).join('');
+            
+            console.log('✅ Products displayed successfully');
+        }
+
+        function openAddProductModal() {
+            document.getElementById('addProductModal').style.display = 'block';
+        }
+
+        function closeAddProductModal() {
+            document.getElementById('addProductModal').style.display = 'none';
+            document.getElementById('addProductForm').reset();
+        }
+
+        function editProduct(productId) {
+            alert(`Edit product with ID: ${productId}`);
+            // Here you would implement edit functionality
+        }
+
+        function deleteProduct(productId) {
+            if (confirm('Are you sure you want to delete this product?')) {
+                alert(`Delete product with ID: ${productId}`);
+                // Here you would implement delete functionality
+            }
+        }
+
+        // Add Product Form Submission
+        document.getElementById('addProductForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(this);
+            const productData = {
+                product_name: formData.get('productName'),
+                type: formData.get('productCategory'),
+                used_by_pet: formData.get('usedByPet') || 'both',
+                cost: parseFloat(formData.get('productPrice')),
+                quantity: parseInt(formData.get('productStock'))
+            };
+            
+            console.log('📦 Sending product data:', productData);
+            
+            // Show loading state
+            const submitBtn = this.querySelector('button[type="submit"]');
+            const originalText = submitBtn.textContent;
+            submitBtn.textContent = 'Adding Product...';
+            submitBtn.disabled = true;
+            
+            fetch('http://localhost:8080/api/products/add', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify(productData)
+            })
+            .then(response => response.json())
+            .then(result => {
+                console.log('📨 Server response:', result);
+                
+                if (result.success) {
+                    alert('Product added successfully!');
+                    closeAddProductModal();
+                    refreshProductsList(); // Refresh the products list
+                } else {
+                    alert('Failed to add product: ' + (result.message || 'Unknown error'));
+                }
+            })
+            .catch(error => {
+                console.error('❌ Error:', error);
+                alert('Error adding product: ' + error.message);
+            })
+            .finally(() => {
+                // Reset button state
+                submitBtn.textContent = originalText;
+                submitBtn.disabled = false;
+            });
+        });
+
+        // Filter functionality
+        document.getElementById('categoryFilter').addEventListener('change', filterProducts);
+        document.getElementById('searchProducts').addEventListener('input', filterProducts);
+
+        function filterProducts() {
+            const category = document.getElementById('categoryFilter').value.toLowerCase();
+            const searchTerm = document.getElementById('searchProducts').value.toLowerCase();
+            
+            const rows = document.querySelectorAll('#productsTable tbody tr');
+            
+            rows.forEach(row => {
+                const cells = row.querySelectorAll('td');
+                if (cells.length < 3) return; // Skip loading/error rows
+                
+                const productName = cells[1].textContent.toLowerCase();
+                const productCategory = cells[2].textContent.toLowerCase();
+                
+                let show = true;
+                
+                if (category && !productCategory.includes(category)) show = false;
+                if (searchTerm && !productName.includes(searchTerm)) show = false;
+                
+                row.style.display = show ? '' : 'none';
+            });
+        }
+
+        // Close modal when clicking outside
+        window.onclick = function(event) {
+            const modal = document.getElementById('addProductModal');
+            if (event.target === modal) {
+                closeAddProductModal();
+            }
+        }
+
+        // Load products when page loads
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Admin products page loaded, loading products from database...');
+            refreshProductsList();
+        });
+    </script>
+</body>
+</html>

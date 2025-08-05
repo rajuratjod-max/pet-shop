@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Management - PawsConnect Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <nav class="admin-navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PawsConnect Admin</span>
+            </div>
+            <div class="admin-user">
+                <span>Welcome, Admin</span>
+                <a href="index.html" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="admin.html">Dashboard</a></li>
+                <li><a href="admin-pets.html" class="active">Pet Management</a></li>
+                <li><a href="admin-products.html">Product Management</a></li>
+                <li><a href="admin-customers.html">Customer Management</a></li>
+                <li><a href="admin-orders.html">Order Management</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1>Pet Management</h1>
+                <button class="btn btn-primary" onclick="openAddPetModal()">Add New Pet</button>
+            </div>
+
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label>Filter by Species:</label>
+                    <select id="speciesFilter">
+                        <option value="">All Species</option>
+                        <option value="dog">Dogs</option>
+                        <option value="cat">Cats</option>
+                        <option value="rabbit">Rabbits</option>
+                        <option value="bird">Birds</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Filter by Breed:</label>
+                    <select id="breedFilter">
+                        <option value="">All Breeds</option>
+                        <option value="golden-retriever">Golden Retriever</option>
+                        <option value="persian">Persian</option>
+                        <option value="labrador">Labrador</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <input type="text" id="searchPets" placeholder="Search pets...">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table" id="petsTable">
+                    <thead>
+                        <tr>
+                            <th>ID</th>
+                            <th>Name</th>
+                            <th>Species</th>
+                            <th>Breed</th>
+                            <th>Age</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>001</td>
+                            <td>Max</td>
+                            <td>Dog</td>
+                            <td>Golden Retriever</td>
+                            <td>2 years</td>
+                            <td>$800</td>
+                            <td><span class="status available">Available</span></td>
+                            <td>
+                                <button class="btn-small btn-edit" onclick="editPet(1)">Edit</button>
+                                <button class="btn-small btn-delete" onclick="deletePet(1)">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>002</td>
+                            <td>Luna</td>
+                            <td>Cat</td>
+                            <td>Persian</td>
+                            <td>1 year</td>
+                            <td>$600</td>
+                            <td><span class="status adopted">Adopted</span></td>
+                            <td>
+                                <button class="btn-small btn-edit" onclick="editPet(2)">Edit</button>
+                                <button class="btn-small btn-delete" onclick="deletePet(2)">Delete</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>003</td>
+                            <td>Buddy</td>
+                            <td>Dog</td>
+                            <td>Labrador Mix</td>
+                            <td>3 years</td>
+                            <td>$700</td>
+                            <td><span class="status available">Available</span></td>
+                            <td>
+                                <button class="btn-small btn-edit" onclick="editPet(3)">Edit</button>
+                                <button class="btn-small btn-delete" onclick="deletePet(3)">Delete</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </main>
+    </div>
+
+    <!-- Add Pet Modal -->
+    <div id="addPetModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeAddPetModal()">&times;</span>
+            <h2>Add New Pet</h2>
+            <form id="addPetForm">
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="petName">Pet Name *</label>
+                        <input type="text" id="petName" name="petName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="petSpecies">Species *</label>
+                        <select id="petSpecies" name="petSpecies" required>
+                            <option value="">Select Species</option>
+                            <option value="dog">Dog</option>
+                            <option value="cat">Cat</option>
+                            <option value="rabbit">Rabbit</option>
+                            <option value="bird">Bird</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="petBreed">Breed *</label>
+                        <input type="text" id="petBreed" name="petBreed" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="petAge">Age *</label>
+                        <input type="text" id="petAge" name="petAge" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="petPrice">Price ($) *</label>
+                        <input type="number" id="petPrice" name="petPrice" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="petGender">Gender *</label>
+                        <select id="petGender" name="petGender" required>
+                            <option value="">Select Gender</option>
+                            <option value="male">Male</option>
+                            <option value="female">Female</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="petDescription">Description</label>
+                    <textarea id="petDescription" name="petDescription" rows="4"></textarea>
+                </div>
+                <div class="form-group">
+                    <label for="petImage">Pet Image</label>
+                    <input type="file" id="petImage" name="petImage" accept="image/*">
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Add Pet</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeAddPetModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+</body>
+</html>

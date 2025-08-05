@@ -1,0 +1,585 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Order Management - PawsConnect Admin</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/admin.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body class="admin-body">
+    <nav class="admin-navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PawsConnect Admin</span>
+            </div>
+            <div class="admin-user">
+                <span>Welcome, Admin</span>
+                <a href="index.html" class="logout-btn">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="admin-container">
+        <aside class="admin-sidebar">
+            <ul class="sidebar-menu">
+                <li><a href="admin.html">Dashboard</a></li>
+                <li><a href="admin-pets.html">Pet Management</a></li>
+                <li><a href="admin-products.html">Product Management</a></li>
+                <li><a href="admin-customers.html">Customer Management</a></li>
+                <li><a href="admin-orders.html" class="active">Order Management</a></li>
+            </ul>
+        </aside>
+
+        <main class="admin-main">
+            <div class="admin-header">
+                <h1>Order Management</h1>
+                <div class="header-actions">
+                    <button class="btn btn-secondary" onclick="generateSalesReport()">📊 Generate Report</button>
+                    <button class="btn btn-primary" onclick="openAddOrderModal()">Add Manual Order</button>
+                </div>
+            </div>
+
+            <div class="filters-section">
+                <div class="filter-group">
+                    <label>Filter by Status:</label>
+                    <select id="orderStatusFilter">
+                        <option value="">All Orders</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="refunded">Refunded</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Order Type:</label>
+                    <select id="orderTypeFilter">
+                        <option value="">All Types</option>
+                        <option value="pet">Pet Adoption</option>
+                        <option value="product">Product Purchase</option>
+                    </select>
+                </div>
+                <div class="filter-group">
+                    <label>Date Range:</label>
+                    <select id="dateRangeFilter">
+                        <option value="">All Time</option>
+                        <option value="today">Today</option>
+                        <option value="week">This Week</option>
+                        <option value="month">This Month</option>
+                        <option value="quarter">This Quarter</option>
+                    </select>
+                </div>
+                <div class="search-group">
+                    <input type="text" id="searchOrders" placeholder="Search orders...">
+                </div>
+            </div>
+
+            <div class="table-container">
+                <table class="admin-table" id="ordersTable">
+                    <thead>
+                        <tr>
+                            <th>Order ID</th>
+                            <th>Customer</th>
+                            <th>Order Type</th>
+                            <th>Items</th>
+                            <th>Order Date</th>
+                            <th>Amount</th>
+                            <th>Status</th>
+                            <th>Actions</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>#ORD001</td>
+                            <td>John Smith</td>
+                            <td><span class="order-type pet">Pet Adoption</span></td>
+                            <td>Golden Retriever - Max</td>
+                            <td>2024-07-25</td>
+                            <td>$800.00</td>
+                            <td><span class="status pending">Pending</span></td>
+                            <td>
+                                <button class="btn-small btn-view" onclick="viewOrderDetails('ORD001')">View</button>
+                                <button class="btn-small btn-edit" onclick="updateOrderStatus('ORD001')">Update</button>
+                                <button class="btn-small btn-delete" onclick="cancelOrder('ORD001')">Cancel</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD002</td>
+                            <td>Sarah Johnson</td>
+                            <td><span class="order-type product">Product</span></td>
+                            <td>Premium Dog Food x2</td>
+                            <td>2024-07-24</td>
+                            <td>$91.98</td>
+                            <td><span class="status completed">Completed</span></td>
+                            <td>
+                                <button class="btn-small btn-view" onclick="viewOrderDetails('ORD002')">View</button>
+                                <button class="btn-small btn-edit" onclick="updateOrderStatus('ORD002')">Update</button>
+                                <button class="btn-small btn-delete" onclick="cancelOrder('ORD002')">Cancel</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD003</td>
+                            <td>Mike Chen</td>
+                            <td><span class="order-type pet">Pet Adoption</span></td>
+                            <td>Persian Cat - Luna</td>
+                            <td>2024-07-23</td>
+                            <td>$600.00</td>
+                            <td><span class="status processing">Processing</span></td>
+                            <td>
+                                <button class="btn-small btn-view" onclick="viewOrderDetails('ORD003')">View</button>
+                                <button class="btn-small btn-edit" onclick="updateOrderStatus('ORD003')">Update</button>
+                                <button class="btn-small btn-delete" onclick="cancelOrder('ORD003')">Cancel</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD004</td>
+                            <td>Emma Davis</td>
+                            <td><span class="order-type product">Product</span></td>
+                            <td>Cat Collar, Cat Food, Toy Set</td>
+                            <td>2024-07-22</td>
+                            <td>$72.97</td>
+                            <td><span class="status completed">Completed</span></td>
+                            <td>
+                                <button class="btn-small btn-view" onclick="viewOrderDetails('ORD004')">View</button>
+                                <button class="btn-small btn-edit" onclick="updateOrderStatus('ORD004')">Update</button>
+                                <button class="btn-small btn-delete" onclick="cancelOrder('ORD004')">Cancel</button>
+                            </td>
+                        </tr>
+                        <tr>
+                            <td>#ORD005</td>
+                            <td>David Wilson</td>
+                            <td><span class="order-type product">Product</span></td>
+                            <td>Dog Vitamins, Treats</td>
+                            <td>2024-07-21</td>
+                            <td>$34.50</td>
+                            <td><span class="status cancelled">Cancelled</span></td>
+                            <td>
+                                <button class="btn-small btn-view" onclick="viewOrderDetails('ORD005')">View</button>
+                                <button class="btn-small btn-edit" onclick="updateOrderStatus('ORD005')">Update</button>
+                                <button class="btn-small btn-delete" onclick="cancelOrder('ORD005')">Cancel</button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <!-- Sales Summary Section -->
+            <div class="sales-summary">
+                <h2>Sales Summary</h2>
+                <div class="summary-cards">
+                    <div class="summary-card">
+                        <h3>Today's Sales</h3>
+                        <div class="summary-amount">$1,245.50</div>
+                        <div class="summary-details">12 orders</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>This Week</h3>
+                        <div class="summary-amount">$8,456.75</div>
+                        <div class="summary-details">67 orders</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>This Month</h3>
+                        <div class="summary-amount">$32,180.25</div>
+                        <div class="summary-details">248 orders</div>
+                    </div>
+                    <div class="summary-card">
+                        <h3>Total Revenue</h3>
+                        <div class="summary-amount">$156,890.00</div>
+                        <div class="summary-details">1,234 orders</div>
+                    </div>
+                </div>
+            </div>
+        </main>
+    </div>
+
+    <!-- Order Details Modal -->
+    <div id="orderDetailsModal" class="modal">
+        <div class="modal-content" style="max-width: 700px;">
+            <span class="close" onclick="closeOrderDetailsModal()">&times;</span>
+            <h2 id="orderDetailsTitle">Order Details</h2>
+            <div id="orderDetailsContent">
+                <!-- Order details will be loaded here -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Update Order Status Modal -->
+    <div id="updateOrderModal" class="modal">
+        <div class="modal-content">
+            <span class="close" onclick="closeUpdateOrderModal()">&times;</span>
+            <h2>Update Order Status</h2>
+            <form id="updateOrderForm">
+                <input type="hidden" id="updateOrderId" name="orderId">
+                <div class="form-group">
+                    <label for="newOrderStatus">New Status *</label>
+                    <select id="newOrderStatus" name="newOrderStatus" required>
+                        <option value="">Select Status</option>
+                        <option value="pending">Pending</option>
+                        <option value="processing">Processing</option>
+                        <option value="completed">Completed</option>
+                        <option value="cancelled">Cancelled</option>
+                        <option value="refunded">Refunded</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="statusNotes">Notes</label>
+                    <textarea id="statusNotes" name="statusNotes" rows="3" placeholder="Add notes about this status update..."></textarea>
+                </div>
+                <div class="form-actions">
+                    <button type="submit" class="btn btn-primary">Update Status</button>
+                    <button type="button" class="btn btn-secondary" onclick="closeUpdateOrderModal()">Cancel</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script src="js/admin.js"></script>
+    <script>
+        // Sample order data - in real application, this would come from API
+        const orderData = {
+            'ORD001': {
+                id: 'ORD001',
+                customer: { name: 'John Smith', email: 'john.smith@email.com', phone: '(555) 123-4567' },
+                type: 'Pet Adoption',
+                items: [
+                    { name: 'Golden Retriever - Max', price: 800.00, quantity: 1 }
+                ],
+                date: '2024-07-25',
+                status: 'pending',
+                total: 800.00,
+                paymentMethod: 'Credit Card',
+                shippingAddress: '123 Main St, Anytown, ST 12345'
+            },
+            'ORD002': {
+                id: 'ORD002',
+                customer: { name: 'Sarah Johnson', email: 'sarah.johnson@email.com', phone: '(555) 234-5678' },
+                type: 'Product Purchase',
+                items: [
+                    { name: 'Premium Dog Food', price: 45.99, quantity: 2 }
+                ],
+                date: '2024-07-24',
+                status: 'completed',
+                total: 91.98,
+                paymentMethod: 'PayPal',
+                shippingAddress: '456 Oak Ave, Other City, ST 67890'
+            }
+        };
+
+        // Order Management Functions
+        function viewOrderDetails(orderId) {
+            const order = orderData[orderId];
+            if (!order) {
+                alert('Order not found!');
+                return;
+            }
+
+            document.getElementById('orderDetailsTitle').textContent = `Order ${orderId} Details`;
+            
+            const detailsHTML = `
+                <div class="order-details">
+                    <div class="detail-section">
+                        <h3>Customer Information</h3>
+                        <p><strong>Name:</strong> ${order.customer.name}</p>
+                        <p><strong>Email:</strong> ${order.customer.email}</p>
+                        <p><strong>Phone:</strong> ${order.customer.phone}</p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Order Information</h3>
+                        <p><strong>Order ID:</strong> ${order.id}</p>
+                        <p><strong>Date:</strong> ${order.date}</p>
+                        <p><strong>Type:</strong> ${order.type}</p>
+                        <p><strong>Status:</strong> <span class="status ${order.status}">${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</span></p>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Items Ordered</h3>
+                        <table class="admin-table">
+                            <thead>
+                                <tr>
+                                    <th>Item</th>
+                                    <th>Price</th>
+                                    <th>Quantity</th>
+                                    <th>Total</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                ${order.items.map(item => `
+                                    <tr>
+                                        <td>${item.name}</td>
+                                        <td>$${item.price.toFixed(2)}</td>
+                                        <td>${item.quantity}</td>
+                                        <td>$${(item.price * item.quantity).toFixed(2)}</td>
+                                    </tr>
+                                `).join('')}
+                            </tbody>
+                        </table>
+                        <div style="text-align: right; margin-top: 1rem;">
+                            <strong>Total: $${order.total.toFixed(2)}</strong>
+                        </div>
+                    </div>
+                    
+                    <div class="detail-section">
+                        <h3>Payment & Shipping</h3>
+                        <p><strong>Payment Method:</strong> ${order.paymentMethod}</p>
+                        <p><strong>Shipping Address:</strong> ${order.shippingAddress}</p>
+                    </div>
+                </div>
+            `;
+            
+            document.getElementById('orderDetailsContent').innerHTML = detailsHTML;
+            document.getElementById('orderDetailsModal').style.display = 'block';
+        }
+
+        function closeOrderDetailsModal() {
+            document.getElementById('orderDetailsModal').style.display = 'none';
+        }
+
+        function updateOrderStatus(orderId) {
+            document.getElementById('updateOrderId').value = orderId;
+            document.getElementById('updateOrderModal').style.display = 'block';
+        }
+
+        function closeUpdateOrderModal() {
+            document.getElementById('updateOrderModal').style.display = 'none';
+            document.getElementById('updateOrderForm').reset();
+        }
+
+        function cancelOrder(orderId) {
+            if (confirm(`Are you sure you want to cancel order ${orderId}?`)) {
+                alert(`Order ${orderId} has been cancelled.`);
+                // Here you would make an API call to cancel the order
+                // updateOrderStatusInTable(orderId, 'cancelled');
+            }
+        }
+
+        function generateSalesReport() {
+            // Create a simple report popup
+            const reportData = {
+                totalOrders: 1234,
+                totalRevenue: 156890.00,
+                averageOrderValue: 127.25,
+                topSellingProduct: 'Premium Dog Food',
+                mostPopularPet: 'Golden Retriever'
+            };
+
+            const reportHTML = `
+                <div style="background: white; padding: 2rem; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); max-width: 500px;">
+                    <h2 style="color: #d63384; margin-bottom: 1.5rem;">Sales Report Summary</h2>
+                    <div style="margin-bottom: 1rem;"><strong>Total Orders:</strong> ${reportData.totalOrders}</div>
+                    <div style="margin-bottom: 1rem;"><strong>Total Revenue:</strong> $${reportData.totalRevenue.toLocaleString()}</div>
+                    <div style="margin-bottom: 1rem;"><strong>Average Order Value:</strong> $${reportData.averageOrderValue}</div>
+                    <div style="margin-bottom: 1rem;"><strong>Top Selling Product:</strong> ${reportData.topSellingProduct}</div>
+                    <div style="margin-bottom: 1.5rem;"><strong>Most Popular Pet:</strong> ${reportData.mostPopularPet}</div>
+                    <button onclick="this.parentElement.parentElement.remove()" style="background: #d63384; color: white; padding: 0.8rem 2rem; border: none; border-radius: 25px; cursor: pointer;">Close Report</button>
+                </div>
+            `;
+
+            const overlay = document.createElement('div');
+            overlay.style.cssText = `
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                background: rgba(0,0,0,0.5);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                z-index: 10000;
+            `;
+            overlay.innerHTML = reportHTML;
+            document.body.appendChild(overlay);
+
+            overlay.addEventListener('click', (e) => {
+                if (e.target === overlay) {
+                    overlay.remove();
+                }
+            });
+        }
+
+        // Update Order Form Submission
+        document.getElementById('updateOrderForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            const orderId = document.getElementById('updateOrderId').value;
+            const newStatus = document.getElementById('newOrderStatus').value;
+            const notes = document.getElementById('statusNotes').value;
+            
+            // Here you would send the data to your backend
+            alert(`Order ${orderId} status updated to: ${newStatus}`);
+            closeUpdateOrderModal();
+            
+            // Update the status in the table
+            // updateOrderStatusInTable(orderId, newStatus);
+        });
+
+        function updateOrderStatusInTable(orderId, newStatus) {
+            // Find the row and update the status
+            const rows = document.querySelectorAll('#ordersTable tbody tr');
+            rows.forEach(row => {
+                const orderIdCell = row.querySelector('td:first-child');
+                if (orderIdCell && orderIdCell.textContent.includes(orderId)) {
+                    const statusCell = row.querySelector('.status');
+                    if (statusCell) {
+                        statusCell.className = `status ${newStatus}`;
+                        statusCell.textContent = newStatus.charAt(0).toUpperCase() + newStatus.slice(1);
+                    }
+                }
+            });
+        }
+
+        // Filter and Search Functions
+        document.getElementById('orderStatusFilter').addEventListener('change', filterOrders);
+        document.getElementById('orderTypeFilter').addEventListener('change', filterOrders);
+        document.getElementById('dateRangeFilter').addEventListener('change', filterOrders);
+        document.getElementById('searchOrders').addEventListener('input', filterOrders);
+
+        function filterOrders() {
+            const statusFilter = document.getElementById('orderStatusFilter').value;
+            const typeFilter = document.getElementById('orderTypeFilter').value;
+            const dateFilter = document.getElementById('dateRangeFilter').value;
+            const searchTerm = document.getElementById('searchOrders').value.toLowerCase();
+            
+            const rows = document.querySelectorAll('#ordersTable tbody tr');
+            
+            rows.forEach(row => {
+                let show = true;
+                
+                // Status filter
+                if (statusFilter) {
+                    const statusElement = row.querySelector('.status');
+                    if (statusElement && !statusElement.classList.contains(statusFilter)) {
+                        show = false;
+                    }
+                }
+                
+                // Type filter
+                if (typeFilter) {
+                    const typeElement = row.querySelector('.order-type');
+                    if (typeElement) {
+                        const typeText = typeElement.textContent.toLowerCase();
+                        if ((typeFilter === 'pet' && !typeText.includes('adoption')) ||
+                            (typeFilter === 'product' && !typeText.includes('product'))) {
+                            show = false;
+                        }
+                    }
+                }
+                
+                // Search filter
+                if (searchTerm) {
+                    const rowText = row.textContent.toLowerCase();
+                    if (!rowText.includes(searchTerm)) {
+                        show = false;
+                    }
+                }
+                
+                row.style.display = show ? '' : 'none';
+            });
+        }
+    </script>
+
+    <style>
+        .header-actions {
+            display: flex;
+            gap: 1rem;
+        }
+
+        .order-type {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+
+        .order-type.pet {
+            background: #e8f5e8;
+            color: #2d5a2d;
+        }
+
+        .order-type.product {
+            background: #e8f4ff;
+            color: #2d4a5a;
+        }
+
+        .sales-summary {
+            background: white;
+            border-radius: 15px;
+            padding: 2rem;
+            margin-top: 2rem;
+            box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+        }
+
+        .summary-cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1.5rem;
+        }
+
+        .summary-card {
+            background: linear-gradient(45deg, #ff6b9d, #ff8fab);
+            color: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+        }
+
+        .summary-card h3 {
+            margin-bottom: 1rem;
+            opacity: 0.9;
+        }
+
+        .summary-amount {
+            font-size: 2rem;
+            font-weight: 700;
+            margin-bottom: 0.5rem;
+        }
+
+        .summary-details {
+            opacity: 0.8;
+            font-size: 0.9rem;
+        }
+
+        .order-details {
+            display: grid;
+            gap: 1.5rem;
+        }
+
+        .detail-section h3 {
+            color: #d63384;
+            border-bottom: 2px solid #fce4ec;
+            padding-bottom: 0.5rem;
+            margin-bottom: 1rem;
+        }
+
+        .btn-view {
+            background: #28a745;
+            color: white;
+        }
+
+        .btn-view:hover {
+            background: #218838;
+        }
+
+        .status.refunded {
+            background: #d1ecf1;
+            color: #0c5460;
+        }
+
+        @media (max-width: 768px) {
+            .summary-cards {
+                grid-template-columns: 1fr 1fr;
+            }
+            
+            .header-actions {
+                flex-direction: column;
+                gap: 0.5rem;
+            }
+        }
+    </style>
+</body>
+</html>

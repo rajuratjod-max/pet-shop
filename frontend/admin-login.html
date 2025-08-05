@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Admin Login - PawsConnect</title>
+  <link rel="stylesheet" href="css/admin.css" />
+  <style>
+    body.admin-body {
+      font-family: 'Poppins', sans-serif;
+      background: #fce4ec;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      margin: 0;
+      padding: 1rem;
+    }
+    .login-container {
+      background: white;
+      padding: 2.5rem;
+      border-radius: 20px;
+      box-shadow: 0 8px 20px rgba(214, 51, 132, 0.15);
+      width: 100%;
+      max-width: 400px;
+    }
+    h2 {
+      color: #d63384;
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .form-group {
+      margin-bottom: 1.2rem;
+    }
+    label {
+      display: block;
+      margin-bottom: 0.5rem;
+      font-weight: 600;
+      color: #333;
+    }
+    input[type="text"],
+    input[type="password"] {
+      width: 100%;
+      padding: 0.8rem;
+      border: 1px solid #ddd;
+      border-radius: 10px;
+      font-size: 1rem;
+      box-sizing: border-box;
+    }
+    button {
+      width: 100%;
+      padding: 0.9rem;
+      border: none;
+      background: #d63384;
+      color: white;
+      font-size: 1.1rem;
+      font-weight: 700;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+    button:hover {
+      background: #b02a6a;
+    }
+  </style>
+</head>
+<body class="admin-body">
+  <div class="login-container">
+    <h2>Admin Login</h2>
+    <form id="adminLoginForm">
+      <div class="form-group">
+        <label for="adminUsername">Username</label>
+        <input type="text" id="adminUsername" name="adminUsername" required autofocus />
+      </div>
+      <div class="form-group">
+        <label for="adminPassword">Password</label>
+        <input type="password" id="adminPassword" name="adminPassword" required />
+      </div>
+      <button type="submit">Login</button>
+    </form>
+  </div>
+
+  <script>
+    document.getElementById('adminLoginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const username = e.target.adminUsername.value.trim();
+      const password = e.target.adminPassword.value.trim();
+
+      // TODO: Replace with real API validation
+      if(username === 'admin' && password === 'admin123'){
+        sessionStorage.setItem('admin_logged_in', 'true');
+        alert('Admin login successful!');
+        window.location.href = 'admin.html';
+      } else {
+        alert('Invalid admin credentials.');
+      }
+    });
+  </script>
+</body>
+</html>

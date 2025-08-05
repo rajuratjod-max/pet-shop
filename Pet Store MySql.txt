@@ -1,0 +1,507 @@
+Pet Store MySql 
+- Table Creation
+mysql> create database miniproject;
+Query OK, 1 row affected (0.01 sec)
+
+mysql> use miniproject;
+Database changed
+mysql> CREATE TABLE product (
+    ->     product_id INT PRIMARY KEY AUTO_INCREMENT,
+    ->     product_name VARCHAR(50) NOT NULL,
+    ->     type VARCHAR(30),
+    ->     used_by_pet VARCHAR(20),
+    ->     cost DECIMAL(10, 2),
+    ->     quantity INT
+    -> );
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> INSERT INTO product (product_id, product_name, type, used_by_pet, cost, quantity) VALUES
+    -> (1, 'Pedigree Adult Dry Dog Food', 'Food', 'Dog', 499.00, 100),
+    -> (2, 'Whiskas Adult Cat Food', 'Food', 'Cat', 375.00, 120),
+    -> (3, 'Purina Pro Plan Dog Food', 'Food', 'Dog', 850.00, 50),
+    -> (4, 'Me-O Persian Adult Cat Food', 'Food', 'Cat', 275.00, 60),
+    -> (5, 'Royal Canin Maxi Puppy Dog Food', 'Food', 'Dog', 1600.00, 25),
+    -> (6, 'Drools Dog Supplement - Absolute Calcium Tablet', 'Supplement', 'Dog', 200.00, 80),
+    -> (7, 'Beaphar Lactol Puppy Milk', 'Supplement', 'Dog', 450.00, 40),
+    -> (8, 'GoodBoy Dog Leash', 'Accessory', 'Dog', 299.00, 70),
+    -> (9, 'Himalaya Healthy Treats for Dogs', 'Treat', 'Dog', 250.00, 90),
+    -> (10, 'Savic Hamster Cage Habitat', 'Accessory', 'Hamster', 1200.00, 15),
+    -> (11, 'Tetra Bits Complete Fish Food', 'Food', 'Fish', 280.00, 100),
+    -> (12, 'Sheba Tuna & Salmon in Gravy Cat Food', 'Food', 'Cat', 50.00, 150),
+    -> (13, 'Pawsh Pet Grooming Brush', 'Grooming', 'Dog', 199.00, 45),
+    -> (14, 'Hikari Tropical Micro Pellets Fish Food', 'Food', 'Fish', 180.00, 100),
+    -> (15, 'Petmate Replendish Gravity Waterer', 'Accessory', 'Dog', 1200.00, 25),
+    -> (16, 'Vitapol Rabbit Food', 'Food', 'Rabbit', 320.00, 60),
+    -> (17, 'Purina Fancy Feast Gourmet Wet Cat Food', 'Food', 'Cat', 150.00, 80),
+    -> (18, 'Kong Classic Dog Toy', 'Toy', 'Dog', 700.00, 30),
+    -> (19, 'All for Paws Interactive Cat Toy', 'Toy', 'Cat', 550.00, 50),
+    -> (20, 'Aqua One Aquarium Fish Tank Cleaner', 'Accessory', 'Fish', 400.00, 40),
+    -> (21, 'BarkBox Dog Dental Chew', 'Treat', 'Dog', 300.00, 55),
+    -> (22, 'Kaytee Clean & Cozy Small Animal Bedding', 'Accessory', 'Hamster', 250.00, 80),
+    -> (23, 'Outward Hound Nina Ottosson Dog Puzzle Toy', 'Toy', 'Dog', 850.00, 20),
+    -> (24, 'Fluval FX6 High Performance Aquarium Filter', 'Accessory', 'Fish', 2500.00, 10),
+    -> (25, 'Exo Terra Reptile Cave', 'Accessory', 'Reptile', 400.00, 35);
+Query OK, 25 rows affected (0.01 sec)
+Records: 25  Duplicates: 0  Warnings: 0
+
+mysql> select*from products;
+ERROR 1146 (42S02): Table 'miniproject.products' doesn't exist
+mysql> select*from product;
++------------+-------------------------------------------------+------------+-------------+---------+----------+
+| product_id | product_name                                    | type       | used_by_pet | cost    | quantity |
++------------+-------------------------------------------------+------------+-------------+---------+----------+
+|          1 | Pedigree Adult Dry Dog Food                     | Food       | Dog         |  499.00 |      100 |
+|          2 | Whiskas Adult Cat Food                          | Food       | Cat         |  375.00 |      120 |
+|          3 | Purina Pro Plan Dog Food                        | Food       | Dog         |  850.00 |       50 |
+|          4 | Me-O Persian Adult Cat Food                     | Food       | Cat         |  275.00 |       60 |
+|          5 | Royal Canin Maxi Puppy Dog Food                 | Food       | Dog         | 1600.00 |       25 |
+|          6 | Drools Dog Supplement - Absolute Calcium Tablet | Supplement | Dog         |  200.00 |       80 |
+|          7 | Beaphar Lactol Puppy Milk                       | Supplement | Dog         |  450.00 |       40 |
+|          8 | GoodBoy Dog Leash                               | Accessory  | Dog         |  299.00 |       70 |
+|          9 | Himalaya Healthy Treats for Dogs                | Treat      | Dog         |  250.00 |       90 |
+|         10 | Savic Hamster Cage Habitat                      | Accessory  | Hamster     | 1200.00 |       15 |
+|         11 | Tetra Bits Complete Fish Food                   | Food       | Fish        |  280.00 |      100 |
+|         12 | Sheba Tuna & Salmon in Gravy Cat Food           | Food       | Cat         |   50.00 |      150 |
+|         13 | Pawsh Pet Grooming Brush                        | Grooming   | Dog         |  199.00 |       45 |
+|         14 | Hikari Tropical Micro Pellets Fish Food         | Food       | Fish        |  180.00 |      100 |
+|         15 | Petmate Replendish Gravity Waterer              | Accessory  | Dog         | 1200.00 |       25 |
+|         16 | Vitapol Rabbit Food                             | Food       | Rabbit      |  320.00 |       60 |
+|         17 | Purina Fancy Feast Gourmet Wet Cat Food         | Food       | Cat         |  150.00 |       80 |
+|         18 | Kong Classic Dog Toy                            | Toy        | Dog         |  700.00 |       30 |
+|         19 | All for Paws Interactive Cat Toy                | Toy        | Cat         |  550.00 |       50 |
+|         20 | Aqua One Aquarium Fish Tank Cleaner             | Accessory  | Fish        |  400.00 |       40 |
+|         21 | BarkBox Dog Dental Chew                         | Treat      | Dog         |  300.00 |       55 |
+|         22 | Kaytee Clean & Cozy Small Animal Bedding        | Accessory  | Hamster     |  250.00 |       80 |
+|         23 | Outward Hound Nina Ottosson Dog Puzzle Toy      | Toy        | Dog         |  850.00 |       20 |
+|         24 | Fluval FX6 High Performance Aquarium Filter     | Accessory  | Fish        | 2500.00 |       10 |
+|         25 | Exo Terra Reptile Cave                          | Accessory  | Reptile     |  400.00 |       35 |
++------------+-------------------------------------------------+------------+-------------+---------+----------+
+25 rows in set (0.00 sec)
+
+mysql> describe product;
++--------------+---------------+------+-----+---------+-------+
+| Field        | Type          | Null | Key | Default | Extra |
++--------------+---------------+------+-----+---------+-------+
+| product_id   | int           | NO   | PRI | NULL    |       |
+| product_name | varchar(50)   | NO   |     | NULL    |       |
+| type         | varchar(30)   | YES  |     | NULL    |       |
+| used_by_pet  | varchar(20)   | YES  |     | NULL    |       |
+| cost         | decimal(10,2) | YES  |     | NULL    |       |
+| quantity     | int           | YES  |     | NULL    |       |
++--------------+---------------+------+-----+---------+-------+
+6 rows in set (0.02 sec)
+
+
+
+mysql> CREATE TABLE customer (
+    ->     customer_id INT PRIMARY KEY,
+    ->     customer_name VARCHAR(50) NOT NULL,
+    ->     address VARCHAR(100),
+    ->     email_address VARCHAR(50),
+    ->     mobile_number NUMERIC(10, 0) -- Numeric type with 10 digits, no decimal places
+    -> );
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> INSERT INTO customer (customer_id, customer_name, address, email_address, mobile_number) VALUES
+    -> (1, 'Aarav Singh', '123 MG Road, Mumbai, Maharashtra', 'aarav.singh@gmail.com', 9876543210),
+    -> (2, 'Isha Patel', '45 Residency Road, Ahmedabad, Gujarat', 'isha.patel@yahoo.co.in', 9123456789),
+    -> (3, 'Rohan Sharma', '12 JP Nagar, Bangalore, Karnataka', 'rohan.sharma@gmail.com', 9345678901),
+    -> (4, 'Meera Menon', '67 Broadway Street, Kochi, Kerala', 'meera.menon@yahoo.co.in', 9871234567),
+    -> (5, 'Vikas Gupta', '32 Laxmi Nagar, New Delhi', 'vikas.gupta@gmail.com', 9812345678),
+    -> (6, 'Nidhi Chawla', '98 RK Puram, Hyderabad, Telangana', 'nidhi.chawla@yahoo.co.in', 9845671234),
+    -> (7, 'Rajesh Deshmukh', '56 Fergusson College Road, Pune, Maharashtra', 'rajesh.deshmukh@gmail.com', 9876540123),
+    -> (8, 'Ananya Kapoor', '23 Park Street, Kolkata, West Bengal', 'ananya.kapoor@gmail.com', 9832109876),
+    -> (9, 'Prakash Yadav', '78 Nehru Place, Lucknow, Uttar Pradesh', 'prakash.yadav@yahoo.co.in', 9123456780),
+    -> (10, 'Sonal Bansal', '65 Sector-18, Gurgaon, Haryana', 'sonal.bansal@gmail.com', 9821456789),
+    -> (11, 'Aditya Verma', '11 Connaught Place, New Delhi', 'aditya.verma@yahoo.co.in', 9812345671),
+    -> (12, 'Divya Iyer', '14 MG Road, Chennai, Tamil Nadu', 'divya.iyer@gmail.com', 9874567890),
+    -> (13, 'Pooja Thakur', '90 Ameerpet, Hyderabad, Telangana', 'pooja.thakur@yahoo.co.in', 9865432109),
+    -> (14, 'Siddharth Rao', '112 Indiranagar, Bangalore, Karnataka', 'siddharth.rao@gmail.com', 9784563210),
+    -> (15, 'Neha Joshi', '45 Marine Drive, Mumbai, Maharashtra', 'neha.joshi@yahoo.co.in', 9923456789),
+    -> (16, 'Amit Choudhary', '56 Harmu Colony, Ranchi, Jharkhand', 'amit.choudhary@gmail.com', 9798012345),
+    -> (17, 'Lakshmi Naidu', '33 Jubilee Hills, Hyderabad, Telangana', 'lakshmi.naidu@yahoo.co.in', 9860123456),
+    -> (18, 'Rakesh Khanna', '78 Ashram Road, Ahmedabad, Gujarat', 'rakesh.khanna@gmail.com', 9765432108),
+    -> (19, 'Sneha Reddy', '50 Banjara Hills, Hyderabad, Telangana', 'sneha.reddy@gmail.com', 9876012345),
+    -> (20, 'Vivek Mishra', '101 Andheri East, Mumbai, Maharashtra', 'vivek.mishra@yahoo.co.in', 9934567890);
+Query OK, 20 rows affected (0.02 sec)
+Records: 20  Duplicates: 0  Warnings: 0
+
+mysql> select*from customer;
++-------------+-----------------+----------------------------------------------+---------------------------+---------------+
+| customer_id | customer_name   | address                                      | email_address             | mobile_number |
++-------------+-----------------+----------------------------------------------+---------------------------+---------------+
+|           1 | Aarav Singh     | 123 MG Road, Mumbai, Maharashtra             | aarav.singh@gmail.com     |    9876543210 |
+|           2 | Isha Patel      | 45 Residency Road, Ahmedabad, Gujarat        | isha.patel@yahoo.co.in    |    9123456789 |
+|           3 | Rohan Sharma    | 12 JP Nagar, Bangalore, Karnataka            | rohan.sharma@gmail.com    |    9345678901 |
+|           4 | Meera Menon     | 67 Broadway Street, Kochi, Kerala            | meera.menon@yahoo.co.in   |    9871234567 |
+|           5 | Vikas Gupta     | 32 Laxmi Nagar, New Delhi                    | vikas.gupta@gmail.com     |    9812345678 |
+|           6 | Nidhi Chawla    | 98 RK Puram, Hyderabad, Telangana            | nidhi.chawla@yahoo.co.in  |    9845671234 |
+|           7 | Rajesh Deshmukh | 56 Fergusson College Road, Pune, Maharashtra | rajesh.deshmukh@gmail.com |    9876540123 |
+|           8 | Ananya Kapoor   | 23 Park Street, Kolkata, West Bengal         | ananya.kapoor@gmail.com   |    9832109876 |
+|           9 | Prakash Yadav   | 78 Nehru Place, Lucknow, Uttar Pradesh       | prakash.yadav@yahoo.co.in |    9123456780 |
+|          10 | Sonal Bansal    | 65 Sector-18, Gurgaon, Haryana               | sonal.bansal@gmail.com    |    9821456789 |
+|          11 | Aditya Verma    | 11 Connaught Place, New Delhi                | aditya.verma@yahoo.co.in  |    9812345671 |
+|          12 | Divya Iyer      | 14 MG Road, Chennai, Tamil Nadu              | divya.iyer@gmail.com      |    9874567890 |
+|          13 | Pooja Thakur    | 90 Ameerpet, Hyderabad, Telangana            | pooja.thakur@yahoo.co.in  |    9865432109 |
+|          14 | Siddharth Rao   | 112 Indiranagar, Bangalore, Karnataka        | siddharth.rao@gmail.com   |    9784563210 |
+|          15 | Neha Joshi      | 45 Marine Drive, Mumbai, Maharashtra         | neha.joshi@yahoo.co.in    |    9923456789 |
+|          16 | Amit Choudhary  | 56 Harmu Colony, Ranchi, Jharkhand           | amit.choudhary@gmail.com  |    9798012345 |
+|          17 | Lakshmi Naidu   | 33 Jubilee Hills, Hyderabad, Telangana       | lakshmi.naidu@yahoo.co.in |    9860123456 |
+|          18 | Rakesh Khanna   | 78 Ashram Road, Ahmedabad, Gujarat           | rakesh.khanna@gmail.com   |    9765432108 |
+|          19 | Sneha Reddy     | 50 Banjara Hills, Hyderabad, Telangana       | sneha.reddy@gmail.com     |    9876012345 |
+|          20 | Vivek Mishra    | 101 Andheri East, Mumbai, Maharashtra        | vivek.mishra@yahoo.co.in  |    9934567890 |
++-------------+-----------------+----------------------------------------------+---------------------------+---------------+
+20 rows in set (0.00 sec)
+
+mysql> describe customer;
++---------------+---------------+------+-----+---------+-------+
+| Field         | Type          | Null | Key | Default | Extra |
++---------------+---------------+------+-----+---------+-------+
+| customer_id   | int           | NO   | PRI | NULL    |       |
+| customer_name | varchar(50)   | NO   |     | NULL    |       |
+| address       | varchar(100)  | YES  |     | NULL    |       |
+| email_address | varchar(50)   | YES  |     | NULL    |       |
+| mobile_number | decimal(10,0) | YES  |     | NULL    |       |
++---------------+---------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+
+mysql> CREATE TABLE pet (
+    ->     pet_id INT PRIMARY KEY,
+    ->     pet_name VARCHAR(50) NOT NULL,
+    ->     pet_type VARCHAR(20),
+date_of_rescue DATE,
+breed VARCHAR(30)
+);
+Query OK, 0 rows affected (0.03 sec)
+
+mysql> INSERT INTO pet (pet_id, pet_name, pet_type, date_of_rescue, breed) VALUES
+(1, 'Buddy', 'Dog', '2021-05-01', 'Labrador Retriever'),
+(2, 'Whiskers', 'Cat', '2019-09-12', 'Persian'),
+(3, 'Milo', 'Dog', '2020-11-05', 'Beagle'),
+(4, 'Snowy', 'Rabbit', '2023-03-15', 'Himalayan'),
+(5, 'Max', 'Dog', '2018-07-20', 'German Shepherd'),
+(6, 'Bella', 'Cat', '2021-01-30', 'Bengal'),
+(7, 'Rocky', 'Dog', '2022-06-18', 'Rottweiler'),
+(8, 'Misty', 'Cat', '2019-10-22', 'Siamese'),
+(9, 'Coco', 'Dog', '2021-04-11', 'Golden Retriever'),
+(10, 'Luna', 'Dog', '2020-12-05', 'Bulldog'),
+(11, 'Toby', 'Cat', '2018-08-25', 'Maine Coon'),
+(12, 'Rex', 'Dog', '2021-06-10', 'Boxer'),
+(13, 'Simba', 'Cat', '2017-11-07', 'Sphynx'),
+(14, 'Charlie', 'Dog', '2020-09-19', 'Dachshund'),
+(15, 'Lucy', 'Rabbit', '2022-02-03', 'Mini Rex'),
+(16, 'Nala', 'Dog', '2021-05-20', 'Doberman Pinscher'),
+(17, 'Ginger', 'Cat', '2019-04-13', 'Abyssinian'),
+(18, 'Zara', 'Dog', '2020-01-28', 'Chihuahua'),
+(19, 'Rocky', 'Dog', '2023-06-23', 'Pitbull'),
+(20, 'Bobby', 'Cat', '2022-07-16', 'Scottish Fold');
+Query OK, 20 rows affected (0.02 sec)
+Records: 20  Duplicates: 0  Warnings: 0
+
+mysql> select*from pet;
++--------+----------+----------+----------------+--------------------+
+| pet_id | pet_name | pet_type | date_of_rescue | breed              |
++--------+----------+----------+----------------+--------------------+
+|      1 | Buddy    | Dog      | 2021-05-01     | Labrador Retriever |
+|      2 | Whiskers | Cat      | 2019-09-12     | Persian            |
+|      3 | Milo     | Dog      | 2020-11-05     | Beagle             |
+|      4 | Snowy    | Rabbit   | 2023-03-15     | Himalayan          |
+|      5 | Max      | Dog      | 2018-07-20     | German Shepherd    |
+|      6 | Bella    | Cat      | 2021-01-30     | Bengal             |
+|      7 | Rocky    | Dog      | 2022-06-18     | Rottweiler         |
+|      8 | Misty    | Cat      | 2019-10-22     | Siamese            |
+|      9 | Coco     | Dog      | 2021-04-11     | Golden Retriever   |
+|     10 | Luna     | Dog      | 2020-12-05     | Bulldog            |
+|     11 | Toby     | Cat      | 2018-08-25     | Maine Coon         |
+|     12 | Rex      | Dog      | 2021-06-10     | Boxer              |
+|     13 | Simba    | Cat      | 2017-11-07     | Sphynx             |
+|     14 | Charlie  | Dog      | 2020-09-19     | Dachshund          |
+|     15 | Lucy     | Rabbit   | 2022-02-03     | Mini Rex           |
+|     16 | Nala     | Dog      | 2021-05-20     | Doberman Pinscher  |
+|     17 | Ginger   | Cat      | 2019-04-13     | Abyssinian         |
+|     18 | Zara     | Dog      | 2020-01-28     | Chihuahua          |
+|     19 | Rocky    | Dog      | 2023-06-23     | Pitbull            |
+|     20 | Bobby    | Cat      | 2022-07-16     | Scottish Fold      |
++--------+----------+----------+----------------+--------------------+
+20 rows in set (0.00 sec)
+
+mysql> describe pet;
++----------------+-------------+------+-----+---------+-------+
+| Field          | Type        | Null | Key | Default | Extra |
++----------------+-------------+------+-----+---------+-------+
+| pet_id         | int         | NO   | PRI | NULL    |       |
+| pet_name       | varchar(50) | NO   |     | NULL    |       |
+| pet_type       | varchar(20) | YES  |     | NULL    |       |
+| date_of_rescue | date        | YES  |     | NULL    |       |
+| breed          | varchar(30) | YES  |     | NULL    |       |
++----------------+-------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+
+mysql> CREATE TABLE orders (
+order_number INT PRIMARY KEY AUTO_INCREMENT,
+order_date DATE,
+quantity INT,
+product_id INT,
+customer_id INT,
+FOREIGN KEY (product_id) REFERENCES product(product_id),
+FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> describe orders;
++--------------+------+------+-----+---------+-------+
+| Field        | Type | Null | Key | Default | Extra |
++--------------+------+------+-----+---------+-------+
+| order_number | int  | NO   | PRI | NULL    |       |
+| order_date   | date | YES  |     | NULL    |       |
+| quantity     | int  | YES  |     | NULL    |       |
+| product_id   | int  | YES  | MUL | NULL    |       |
+| customer_id  | int  | YES  | MUL | NULL    |       |
++--------------+------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+
+
+mysql> CREATE TABLE adopts (
+pet_id INT PRIMARY KEY,
+customer_id INT,
+date_of_adoption DATE,
+FOREIGN KEY (customer_id) REFERENCES customer(customer_id)
+);
+Query OK, 0 rows affected (0.04 sec)
+
+mysql> describe adopts;
++------------------+------+------+-----+---------+-------+
+| Field            | Type | Null | Key | Default | Extra |
++------------------+------+------+-----+---------+-------+
+| pet_id           | int  | NO   | PRI | NULL    |       |
+| customer_id      | int  | YES  | MUL | NULL    |       |
+| date_of_adoption | date | YES  |     | NULL    |       |
++------------------+------+------+-----+---------+-------+
+3 rows in set (0.00 sec)
+
+
+
+CREATE TABLE got_adopted (
+pet_id INT PRIMARY KEY,
+pet_name VARCHAR(100),
+pet_type VARCHAR(50),
+breed VARCHAR(50),
+date_of_rescue DATE,
+);
+Query OK, 0 rows affected (0.02 sec)
+
+mysql> describe got_adopted;
++----------------+--------------+------+-----+---------+-------+
+| Field          | Type         | Null | Key | Default | Extra |
++----------------+--------------+------+-----+---------+-------+
+| pet_id         | int          | NO   | PRI | NULL    |       |
+| pet_name       | varchar(100) | YES  |     | NULL    |       |
+| pet_type       | varchar(50)  | YES  |     | NULL    |       |
+| breed          | varchar(50)  | YES  |     | NULL    |       |
+| date_of_rescue | date         | YES  |     | NULL    |       |
++----------------+--------------+------+-----+---------+-------+
+5 rows in set (0.00 sec)
+
+-- Triggers
+
+CREATE TRIGGER adopted_pets AFTER INSERT ON adopts
+FOR EACH ROW
+BEGIN
+ DECLARE p_id INT;
+ DECLARE p_name VARCHAR(30);
+ DECLARE p_breed VARCHAR(30);
+ DECLARE p_rescue_date DATE;
+ DECLARE p_type VARCHAR(30);
+SELECT pet_id, pet_name, pet_type, date_of_rescue, breed INTO p_id, p_name, p_type, p_rescue_date, p_breed FROM pet NATURAL JOIN adopts WHERE pet_id = NEW.pet_id;
+INSERT INTO got_adopted VALUES (p_id, p_name, p_type, p_breed, p_rescue_date);
+DELETE FROM pet WHERE pet_id = NEW.pet_id;
+END//
+
+CREATE TRIGGER check_pet_id BEFORE INSERT ON adopts
+FOR EACH ROW
+BEGIN
+DECLARE pet_exists INT DEFAULT 0;
+SELECT COUNT(*) INTO pet_exists FROM pet WHERE pet_id =NEW.pet_id;
+IF product_exists = 0 THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Pet Doesn't Exist';
+END IF;
+END//
+
+DELIMITER //
+CREATE TRIGGER decrementOnPurchase
+AFTER INSERT ON orders
+FOR EACH ROW
+BEGIN
+UPDATE product
+SET quantity = quantity - NEW.quantity WHERE product_id = NEW.product_id;
+END;
+//
+
+-- Function
+
+DELIMITER //
+CREATE FUNCTION check_email_status(email VARCHAR(255))
+RETURNS INT
+DETERMINISTIC
+BEGIN
+DECLARE email_exists_admin INT DEFAULT 0;
+DECLARE email_exists_customer INT DEFAULT 0;
+DECLARE result INT DEFAULT 3; -- Initialize to a value that is not 0, 1, or 2
+-- Check if the email exists in the admin table
+SELECT COUNT(*) INTO email_exists_admin
+FROM admin
+WHERE admin.email_id = email;
+-- Check if the email exists in the customer table
+SELECT COUNT(*) INTO email_exists_customer
+FROM customer
+WHERE customer.email_address = email;
+-- Determine the result based on the presence in the tables
+IF email_exists_admin > 0 AND email_exists_customer > 0 THEN
+SET result = 0;
+ELSEIF email_exists_admin > 0 THEN
+SET result = 2;
+ELSEIF email_exists_customer > 0 THEN
+SET result = 1;
+ELSE
+SET result = 3; -- In case the email does not exist in either table
+END IF;
+RETURN result;
+END;
+//
+DELIMITER ;
+
+
+-- Procedure
+
+DELIMITER //
+CREATE PROCEDURE GetCustomerIdByEmail(IN p_email_address VARCHAR(50), OUT p_customer_id INT)
+BEGIN
+SELECT customer_id
+INTO p_customer_id
+FROM customer
+WHERE email_address = p_email_address
+LIMIT 1;
+END //
+DELIMITER ;
+
+
+-- Index
+mysql> set profiling=1;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+mysql> select*from product where product_id=15;
++------------+------------------------------------+-----------+-------------+---------+----------+
+| product_id | product_name                       | type      | used_by_pet | cost    | quantity |
++------------+------------------------------------+-----------+-------------+---------+----------+
+|         15 | Petmate Replendish Gravity Waterer | Accessory | Dog         | 1200.00 |       25 |
++------------+------------------------------------+-----------+-------------+---------+----------+
+1 row in set (0.00 sec)
+
+mysql> show profiling;
+ERROR 1064 (42000): You have an error in your SQL syntax; check the manual that corresponds to your MySQL server version for the right syntax to use near 'profiling' at line 1
+mysql> show profile;
++---------------+----------+
+| Status        | Duration |
++---------------+----------+
+| starting      | 0.000092 |
+| freeing items | 0.000152 |
+| cleaning up   | 0.000041 |
++---------------+----------+
+3 rows in set, 1 warning (0.00 sec)
+
+mysql> create index searchByProduct_id on product(product_id);
+Query OK, 0 rows affected (0.08 sec)
+Records: 0  Duplicates: 0  Warnings: 0
+
+mysql> select*from product where product_id=15;
++------------+------------------------------------+-----------+-------------+---------+----------+
+| product_id | product_name                       | type      | used_by_pet | cost    | quantity |
++------------+------------------------------------+-----------+-------------+---------+----------+
+|         15 | Petmate Replendish Gravity Waterer | Accessory | Dog         | 1200.00 |       25 |
++------------+------------------------------------+-----------+-------------+---------+----------+
+1 row in set (0.00 sec)
+
+mysql> show profile;
++--------------------------------+----------+
+| Status                         | Duration |
++--------------------------------+----------+
+| starting                       | 0.000140 |
+| Executing hook on transaction  | 0.000006 |
+| starting                       | 0.000012 |
+| checking permissions           | 0.000008 |
+| Opening tables                 | 0.000075 |
+| init                           | 0.000007 |
+| System lock                    | 0.000014 |
+| optimizing                     | 0.000017 |
+| statistics                     | 0.000121 |
+| preparing                      | 0.000020 |
+| executing                      | 0.000022 |
+| end                            | 0.000004 |
+| query end                      | 0.000003 |
+| waiting for handler commit     | 0.000016 |
+| closing tables                 | 0.000011 |
+| freeing items                  | 0.000135 |
+| cleaning up                    | 0.000024 |
++--------------------------------+----------+
+17 rows in set, 1 warning (0.00 sec)
+
+mysql> set profiling=1;
+Query OK, 0 rows affected, 1 warning (0.00 sec)
+
+-- View
+CREATE VIEW BuyerJoin AS
+SELECT
+    c.customer_id,
+    c.customer_name,
+    c.address,
+    c.email_address,
+    c.mobile_number,
+    o.order_id,
+    o.order_date,
+    o.quantity AS order_quantity,
+    p.product_id,
+    p.product_name,
+    p.type AS product_type,
+    p.used_by_pet,
+    p.cost AS product_cost,
+    p.quantity AS product_quantity
+FROM
+    customer c
+JOIN
+    orders o ON c.customer_id = o.customer_id
+JOIN
+    product p ON o.product_id = p.product_id;
+SELECT * FROM BuyerJoin;
+
+
+CREATE VIEW AdopteesJoin AS
+SELECT
+    c.customer_id,
+    c.customer_name,
+    c.address,
+    c.email_address,
+    c.mobile_number,
+    a.pet_id,
+ga.pet_name,
+ga.breed,
+ga.pet_type,
+    a.date_of_adoption AS adoption_date
+FROM
+    customer c
+JOIN
+    adopts a ON c.customer_id = a.customer_id
+JOIN
+    got_adopted ga ON a.pet_id = ga.pet_id
+WHERE
+    a.pet_id = ga.pet_id;
+
+
+
+
+
+
+
