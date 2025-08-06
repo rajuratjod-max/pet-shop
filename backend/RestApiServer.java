@@ -20,7 +20,9 @@ public class RestApiServer {
     private static final String DB_PASSWORD = "raju"; // Update with your MySQL password
     
     public static void main(String[] args) throws IOException {
-       HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
+       int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
+HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
+
 
 
         
