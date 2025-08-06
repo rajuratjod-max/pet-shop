@@ -21,7 +21,8 @@ public class RestApiServer {
     
     public static void main(String[] args) throws IOException {
         int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
-        HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
+HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
+
         
         System.out.println("🚀 Starting Pet Adoption API Server...");
         
