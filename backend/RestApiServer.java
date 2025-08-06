@@ -4,7 +4,7 @@ import java.io.*;
 import java.net.*;
 import java.sql.*;
 import java.util.*;
-import java.sql.Date; 
+import java.sql.Date;
 import com.sun.net.httpserver.*;
 import com.google.gson.*;
 import java.security.MessageDigest;
@@ -20,11 +20,8 @@ public class RestApiServer {
     private static final String DB_PASSWORD = "raju"; // Update with your MySQL password
     
     public static void main(String[] args) throws IOException {
-       int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
-HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
-
-
-
+        int port = Integer.parseInt(System.getenv().getOrDefault("PORT", "8080"));
+        HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0);
         
         System.out.println("🚀 Starting Pet Adoption API Server...");
         
@@ -64,8 +61,8 @@ HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0)
         
         server.setExecutor(null);
         server.start();
-        System.out.println("🌟 Pet Adoption API Server started on port 8080");
-        
+        System.out.println("🌟 Pet Adoption API Server started on port " + port);
+        System.out.println("📱 Frontend can now connect to: http://localhost:" + port);
         System.out.println("🔍 Debug logging is enabled for troubleshooting");
         System.out.println("🔐 Admin login: username='admin', password='admin123'");
     }
@@ -495,7 +492,7 @@ HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0)
                 pstmt.setString(2, petData.get("pet_type").toString());
                 pstmt.setString(3, petData.get("breed").toString());
                 pstmt.setString(4, petData.get("age").toString());
-                pstmt.setDate(5, Date.valueOf(petData.get("date_of_rescue").toString()));
+                pstmt.setDate(5, java.sql.Date.valueOf(petData.get("date_of_rescue").toString()));
                 pstmt.setBoolean(6, false); // Initially not adopted
                 
                 int rowsAffected = pstmt.executeUpdate();
@@ -562,7 +559,7 @@ HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0)
                 PreparedStatement adoptStmt = con.prepareStatement(insertAdoptSql);
                 adoptStmt.setInt(1, customerId);
                 adoptStmt.setInt(2, petId);
-                adoptStmt.setDate(3, Date.valueOf(adoptionDate));
+                adoptStmt.setDate(3, java.sql.Date.valueOf(adoptionDate));
                 adoptStmt.executeUpdate();
                 
                 // Update pet as adopted
@@ -772,7 +769,7 @@ HttpServer server = HttpServer.create(new InetSocketAddress("0.0.0.0", port), 0)
                 orderStmt.setInt(1, customerId);
                 orderStmt.setInt(2, productId);
                 orderStmt.setInt(3, quantity);
-                orderStmt.setDate(4, Date.valueOf(orderDate));
+                orderStmt.setDate(4, java.sql.Date.valueOf(orderDate));
                 orderStmt.setDouble(5, totalAmount);
                 orderStmt.executeUpdate();
                 

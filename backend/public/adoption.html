@@ -1,0 +1,312 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Adoption - PawsConnect</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PawsConnect</span>
+            </div>
+            <ul class="nav-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="adoption.html" class="active">Adoption</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="admin.html">Admin</a></li>
+            </ul>
+            <div class="mobile-menu-toggle">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <main>
+        <section class="page-hero">
+            <div class="container">
+                <h1>Find Your Perfect Companion</h1>
+                <p>Browse our available pets and start your adoption journey today</p>
+            </div>
+        </section>
+
+        <section class="adoption-filters">
+            <div class="container">
+                <div class="filter-bar">
+                    <div class="filter-group">
+                        <label>Animal Type:</label>
+                        <select id="animalTypeFilter">
+                            <option value="">All Animals</option>
+                            <option value="dog">Dogs</option>
+                            <option value="cat">Cats</option>
+                            <option value="rabbit">Rabbits</option>
+                            <option value="bird">Birds</option>
+                            <option value="hamster">Hamsters</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Age Group:</label>
+                        <select id="ageFilter">
+                            <option value="">Any Age</option>
+                            <option value="young">Young (0-2 years)</option>
+                            <option value="adult">Adult (2-7 years)</option>
+                            <option value="senior">Senior (7+ years)</option>
+                        </select>
+                    </div>
+                    <div class="filter-group">
+                        <label>Breed:</label>
+                        <select id="breedFilter">
+                            <option value="">All Breeds</option>
+                            <option value="golden-retriever">Golden Retriever</option>
+                            <option value="persian">Persian</option>
+                            <option value="labrador">Labrador</option>
+                            <option value="siamese">Siamese</option>
+                        </select>
+                    </div>
+                    <div class="search-group">
+                        <input type="text" id="searchPets" placeholder="Search pets by name...">
+                    </div>
+                    <button onclick="refreshPetsList()" class="btn btn-secondary">🔄 Refresh</button>
+                </div>
+            </div>
+        </section>
+
+        <section class="adoption-grid">
+            <div class="container">
+                <div class="pets-grid" id="petsGrid">
+                    <!-- Pets will be loaded from database -->
+                    <div class="loading-message">
+                        <p>Loading pets from database...</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <section class="adoption-process">
+            <div class="container">
+                <h2>Adoption Process</h2>
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <h3>Browse Pets</h3>
+                        <p>Look through our available pets and find one that matches your lifestyle</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <h3>Meet & Greet</h3>
+                        <p>Schedule a visit to meet your potential new family member</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <h3>Application</h3>
+                        <p>Fill out our adoption application and provide references</p>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <h3>Take Home</h3>
+                        <p>Complete the adoption and welcome your new pet home!</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <div class="logo">
+                        <span class="logo-icon">🐾</span>
+                        <span class="logo-text">PawsConnect</span>
+                    </div>
+                    <p>Creating loving connections between pets and families since 2020.</p>
+                </div>
+                <div class="footer-section">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="about.html">About Us</a></li>
+                        <li><a href="adoption.html">Adoption</a></li>
+                        <li><a href="shop.html">Shop</a></li>
+                        <li><a href="contact.html">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h4>Contact Info</h4>
+                    <p>📍 123 Pet Street, Animal City</p>
+                    <p>📞 (555) 123-PAWS</p>
+                    <p>✉️ info@pawsconnect.com</p>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 PawsConnect. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="js/main.js"></script>
+    <script>
+        // Database Integration for Pets
+        function loadPetsFromDatabase() {
+            console.log('🐾 Loading pets from database...');
+            
+            fetch('http://localhost:8080/api/pets')
+                .then(response => {
+                    console.log('📡 API Response status:', response.status);
+                    return response.json();
+                })
+                .then(pets => {
+                    console.log('✅ Loaded pets:', pets);
+                    console.log('📊 Number of pets:', pets.length);
+                    displayPetsFromDatabase(pets);
+                })
+                .catch(error => {
+                    console.error('❌ Error loading pets:', error);
+                    showErrorMessage('Error loading pets from database');
+                });
+        }
+
+        function displayPetsFromDatabase(pets) {
+            const petsGrid = document.getElementById('petsGrid');
+            if (!petsGrid) {
+                console.error('❌ Pets grid container not found');
+                return;
+            }
+            
+            if (pets.length === 0) {
+                petsGrid.innerHTML = `
+                    <div class="no-pets-message">
+                        <div class="empty-icon">🐾</div>
+                        <h3>No pets available for adoption at the moment</h3>
+                        <p>Please check back soon for new arrivals!</p>
+                    </div>
+                `;
+                return;
+            }
+            
+            petsGrid.innerHTML = pets.map(pet => `
+                <div class="pet-card" data-category="${pet.pet_type}" data-age="${pet.age}">
+                    <img src="https://via.placeholder.com/280x200/96CEB4/FFFFFF?text=${encodeURIComponent(pet.pet_name)}" alt="${pet.pet_name}">
+                    <div class="pet-info">
+                        <h3>${pet.pet_name}</h3>
+                        <p class="pet-breed">${pet.pet_type} • ${pet.breed}</p>
+                        <div class="pet-details">
+                            <span>🎂 Age: ${pet.age}</span>
+                            <span>📅 Rescued: ${pet.date_of_rescue}</span>
+                        </div>
+                        <p class="pet-description">A lovely ${pet.pet_type.toLowerCase()} looking for a forever home!</p>
+                        <div class="pet-tags">
+                            <span class="tag">${pet.pet_type}</span>
+                            <span class="tag">${pet.breed}</span>
+                        </div>
+                        <button class="adopt-btn" onclick="adoptPet('${pet.pet_id}', '${pet.pet_name}')">Adopt ${pet.pet_name}</button>
+                    </div>
+                </div>
+            `).join('');
+            
+            console.log('✅ Pets displayed successfully');
+        }
+
+        function adoptPet(petId, petName) {
+            const customerId = localStorage.getItem('customer_id') || '1001';
+            
+            console.log(`🐾 Adopting pet: ${petName} (ID: ${petId})`);
+            
+            if (confirm(`Are you sure you want to adopt ${petName}?`)) {
+                const adoptionData = {
+                    pet_id: petId,
+                    customer_id: customerId,
+                    adoption_date: new Date().toISOString().split('T')[0]
+                };
+                
+                fetch('http://localhost:8080/api/pets/adopt', {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    body: JSON.stringify(adoptionData)
+                })
+                .then(response => response.json())
+                .then(result => {
+                    console.log('📨 Adoption response:', result);
+                    if (result.success) {
+                        alert(`Congratulations! You have successfully adopted ${petName}! 🎉`);
+                        loadPetsFromDatabase(); // Refresh pets list
+                    } else {
+                        alert('Error processing adoption. Please try again.');
+                    }
+                })
+                .catch(error => {
+                    console.error('❌ Adoption error:', error);
+                    alert('Error connecting to database');
+                });
+            }
+        }
+
+        function refreshPetsList() {
+            loadPetsFromDatabase();
+        }
+
+        function showErrorMessage(message) {
+            const petsGrid = document.getElementById('petsGrid');
+            if (petsGrid) {
+                petsGrid.innerHTML = `
+                    <div class="error-message">
+                        <div class="error-icon">❌</div>
+                        <h3>Error Loading Pets</h3>
+                        <p>${message}</p>
+                        <button onclick="loadPetsFromDatabase()" class="btn btn-primary">Try Again</button>
+                    </div>
+                `;
+            }
+        }
+
+        // Filter functionality
+        function filterPets() {
+            const animalType = document.getElementById('animalTypeFilter').value;
+            const ageGroup = document.getElementById('ageFilter').value;
+            const breed = document.getElementById('breedFilter').value;
+            const searchTerm = document.getElementById('searchPets').value.toLowerCase();
+            
+            const petCards = document.querySelectorAll('.pet-card');
+            
+            petCards.forEach(card => {
+                let show = true;
+                
+                const cardType = card.dataset.category;
+                const cardAge = card.dataset.age;
+                const cardName = card.querySelector('h3').textContent.toLowerCase();
+                const cardBreed = card.querySelector('.pet-breed').textContent.toLowerCase();
+                
+                if (animalType && cardType !== animalType) show = false;
+                if (searchTerm && !cardName.includes(searchTerm)) show = false;
+                if (breed && !cardBreed.includes(breed)) show = false;
+                
+                card.style.display = show ? 'block' : 'none';
+            });
+        }
+
+        // Event listeners
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('🚀 Adoption page loaded, loading pets from database...');
+            loadPetsFromDatabase();
+            
+            // Add event listeners for filters
+            document.getElementById('animalTypeFilter').addEventListener('change', filterPets);
+            document.getElementById('ageFilter').addEventListener('change', filterPets);
+            document.getElementById('breedFilter').addEventListener('change', filterPets);
+            document.getElementById('searchPets').addEventListener('input', filterPets);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,655 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>PawsConnect - Every Pet Deserves a Forever Home</title>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/responsive.css">
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        /* Enhanced Homepage Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Poppins', sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+
+        .navbar {
+            background: linear-gradient(135deg, #d63384, #ff6b9d);
+            padding: 1rem 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+
+        .nav-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 2rem;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            color: white;
+            font-size: 1.5rem;
+            font-weight: 700;
+            text-decoration: none;
+        }
+
+        .logo-icon {
+            font-size: 2rem;
+        }
+
+        .nav-menu {
+            display: flex;
+            list-style: none;
+            gap: 2rem;
+        }
+
+        .nav-menu a {
+            color: white;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+
+        .nav-menu a:hover,
+        .nav-menu a.active {
+            color: #ffe0e8;
+        }
+
+        .mobile-menu-toggle {
+            display: none;
+            flex-direction: column;
+            cursor: pointer;
+        }
+
+        .mobile-menu-toggle span {
+            width: 25px;
+            height: 3px;
+            background: white;
+            margin: 3px 0;
+            transition: 0.3s;
+        }
+
+        .hero {
+            background: linear-gradient(135deg, rgba(214,51,132,0.9), rgba(255,107,157,0.9)), url('https://images.unsplash.com/photo-1601758228041-f3b2795255f1?ixlib=rb-4.0.3') center/cover;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            text-align: center;
+            color: white;
+            padding: 0 2rem;
+        }
+
+        .hero-content {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        .hero h1 {
+            font-size: 3.5rem;
+            margin-bottom: 1rem;
+            font-weight: 700;
+        }
+
+        .hero p {
+            font-size: 1.3rem;
+            margin-bottom: 2rem;
+            opacity: 0.95;
+        }
+
+        .cta-buttons {
+            display: flex;
+            gap: 1rem;
+            justify-content: center;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            padding: 1rem 2rem;
+            border: none;
+            border-radius: 30px;
+            font-size: 1.1rem;
+            font-weight: 600;
+            text-decoration: none;
+            cursor: pointer;
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .btn-primary {
+            background: white;
+            color: #d63384;
+        }
+
+        .btn-secondary {
+            background: transparent;
+            color: white;
+            border: 2px solid white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.2);
+        }
+
+        .stats-section {
+            background: white;
+            padding: 4rem 2rem;
+            margin-top: -3rem;
+            position: relative;
+            z-index: 10;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 2rem;
+            background: white;
+            padding: 3rem 2rem;
+            border-radius: 20px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+        }
+
+        .stat-item {
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 3rem;
+            font-weight: 700;
+            color: #d63384;
+            margin-bottom: 0.5rem;
+        }
+
+        .stat-label {
+            color: #666;
+            font-weight: 500;
+        }
+
+        .featured-section {
+            padding: 6rem 2rem;
+            background: #f8f9fa;
+        }
+
+        .section-header {
+            text-align: center;
+            margin-bottom: 4rem;
+        }
+
+        .section-header h2 {
+            font-size: 2.5rem;
+            color: #333;
+            margin-bottom: 1rem;
+        }
+
+        .section-header p {
+            font-size: 1.2rem;
+            color: #666;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+
+        .pets-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 2rem;
+        }
+
+        .pet-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .pet-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.15);
+        }
+
+        .pet-image {
+            height: 250px;
+            background: linear-gradient(45deg, #ff6b9d, #d63384);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 4rem;
+            color: white;
+        }
+
+        .pet-info {
+            padding: 2rem;
+        }
+
+        .pet-info h3 {
+            font-size: 1.5rem;
+            color: #333;
+            margin-bottom: 0.5rem;
+        }
+
+        .pet-details {
+            color: #666;
+            margin-bottom: 1rem;
+        }
+
+        .pet-tags {
+            margin-bottom: 1.5rem;
+        }
+
+        .tag {
+            display: inline-block;
+            background: #ffe0e8;
+            color: #d63384;
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.9rem;
+            margin-right: 0.5rem;
+        }
+
+        .adopt-btn {
+            width: 100%;
+            background: linear-gradient(135deg, #d63384, #ff6b9d);
+            color: white;
+            border: none;
+            padding: 1rem;
+            border-radius: 15px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+
+        .adopt-btn:hover {
+            transform: translateY(-2px);
+        }
+
+        .footer {
+            background: #333;
+            color: white;
+            padding: 3rem 2rem 2rem;
+        }
+
+        .footer-content {
+            max-width: 1200px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+        }
+
+        .footer-section h4 {
+            margin-bottom: 1rem;
+            color: #ff6b9d;
+        }
+
+        .footer-section ul {
+            list-style: none;
+        }
+
+        .footer-section ul li {
+            margin-bottom: 0.5rem;
+        }
+
+        .footer-section a {
+            color: #ccc;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+
+        .footer-section a:hover {
+            color: #ff6b9d;
+        }
+
+        .footer-bottom {
+            text-align: center;
+            margin-top: 2rem;
+            padding-top: 2rem;
+            border-top: 1px solid #555;
+            color: #ccc;
+        }
+
+        /* Mobile Responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 80px;
+                left: -100%;
+                width: 100%;
+                height: calc(100vh - 80px);
+                background: linear-gradient(135deg, #d63384, #ff6b9d);
+                flex-direction: column;
+                justify-content: start;
+                align-items: center;
+                padding-top: 2rem;
+                transition: left 0.3s;
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            .mobile-menu-toggle {
+                display: flex;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+
+            .cta-buttons {
+                flex-direction: column;
+                align-items: center;
+            }
+
+            .stats-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 1rem;
+                padding: 2rem 1rem;
+            }
+
+            .pets-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        .loading-message {
+            text-align: center;
+            padding: 3rem;
+            color: #666;
+            font-size: 1.1rem;
+        }
+
+        .error-message {
+            text-align: center;
+            padding: 3rem;
+            color: #d63384;
+            font-size: 1.1rem;
+        }
+    </style>
+</head>
+<body>
+    <!-- Navigation -->
+    <nav class="navbar">
+        <div class="nav-container">
+            <a href="index.html" class="logo">
+                <span class="logo-icon">🐾</span>
+                <span class="logo-text">PawsConnect</span>
+            </a>
+            <ul class="nav-menu" id="navMenu">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About</a></li>
+                <li><a href="services.html">Services</a></li>
+                <li><a href="adoption.html">Adoption</a></li>
+                <li><a href="shop.html">Shop</a></li>
+                <li><a href="blog.html">Blog</a></li>
+                <li><a href="contact.html">Contact</a></li>
+                <li><a href="customer-login.html">Login</a></li>
+                <li><a href="admin-login.html">Admin</a></li>
+            </ul>
+            <div class="mobile-menu-toggle" onclick="toggleMobileMenu()">
+                <span></span>
+                <span></span>
+                <span></span>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Hero Section -->
+    <section class="hero">
+        <div class="hero-content">
+            <h1>Every Pet Deserves a Forever Home</h1>
+            <p>Connect with loving animals waiting for their perfect family. Our mission is to create lasting bonds between pets and people through compassionate care and responsible adoption.</p>
+            <div class="cta-buttons">
+                <a href="adoption.html" class="btn btn-primary">Find Your Pet</a>
+                <a href="about.html" class="btn btn-secondary">Learn More</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Statistics Section -->
+    <section class="stats-section">
+        <div class="container">
+            <div class="stats-grid">
+                <div class="stat-item">
+                    <div class="stat-number" id="totalPets">0</div>
+                    <div class="stat-label">Pets Available</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalAdoptions">0</div>
+                    <div class="stat-label">Happy Adoptions</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number" id="totalCustomers">0</div>
+                    <div class="stat-label">Registered Users</div>
+                </div>
+                <div class="stat-item">
+                    <div class="stat-number">24/7</div>
+                    <div class="stat-label">Care Support</div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Featured Pets Section -->
+    <section class="featured-section">
+        <div class="container">
+            <div class="section-header">
+                <h2>Meet Our Featured Friends</h2>
+                <p>These amazing pets are looking for their forever homes. Could one of them be perfect for your family?</p>
+            </div>
+            <div class="pets-grid" id="featuredPetsGrid">
+                <div class="loading-message">
+                    Loading our wonderful pets...
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 3rem;">
+                <a href="adoption.html" class="btn btn-primary">View All Available Pets</a>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <div class="logo">
+                    <span class="logo-icon">🐾</span>
+                    <span class="logo-text">PawsConnect</span>
+                </div>
+                <p>Creating loving connections between pets and families since 2020. Every adoption story is a celebration of love, hope, and new beginnings.</p>
+            </div>
+            <div class="footer-section">
+                <h4>Quick Links</h4>
+                <ul>
+                    <li><a href="about.html">About Us</a></li>
+                    <li><a href="adoption.html">Pet Adoption</a></li>
+                    <li><a href="shop.html">Pet Shop</a></li>
+                    <li><a href="services.html">Our Services</a></li>
+                    <li><a href="contact.html">Contact Us</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Support</h4>
+                <ul>
+                    <li><a href="faq.html">FAQ</a></li>
+                    <li><a href="volunteer.html">Volunteer</a></li>
+                    <li><a href="donate.html">Donate</a></li>
+                    <li><a href="emergency.html">Emergency Care</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h4>Contact Info</h4>
+                <p><i class="fas fa-map-marker-alt"></i> 123 Pet Street, Animal City, AC 12345</p>
+                <p><i class="fas fa-phone"></i> (555) 123-PAWS</p>
+                <p><i class="fas fa-envelope"></i> info@pawsconnect.com</p>
+                <p><i class="fas fa-clock"></i> Open 24/7 for emergencies</p>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2024 PawsConnect. All rights reserved. Made with ❤️ for our furry friends.</p>
+        </div>
+    </footer>
+
+    <script>
+        // Mobile menu toggle
+        function toggleMobileMenu() {
+            const navMenu = document.getElementById('navMenu');
+            navMenu.classList.toggle('active');
+        }
+
+        // Load homepage data from backend
+        document.addEventListener('DOMContentLoaded', function() {
+            loadHomepageStats();
+            loadFeaturedPets();
+        });
+
+        function loadHomepageStats() {
+            console.log('📊 Loading homepage statistics...');
+
+            // Load pets count
+            fetch('http://localhost:8080/api/pets')
+                .then(response => response.json())
+                .then(pets => {
+                    document.getElementById('totalPets').textContent = pets.length;
+                    animateCounter('totalPets', pets.length);
+                })
+                .catch(error => {
+                    console.error('Error loading pets:', error);
+                    document.getElementById('totalPets').textContent = '50+';
+                });
+
+            // Load customers count
+            fetch('http://localhost:8080/api/customers')
+                .then(response => response.json())
+                .then(customers => {
+                    document.getElementById('totalCustomers').textContent = customers.length;
+                    animateCounter('totalCustomers', customers.length);
+                })
+                .catch(error => {
+                    console.error('Error loading customers:', error);
+                    document.getElementById('totalCustomers').textContent = '100+';
+                });
+
+            // Load adoptions count
+            fetch('http://localhost:8080/api/admin/adopted-pets')
+                .then(response => response.json())
+                .then(adoptions => {
+                    document.getElementById('totalAdoptions').textContent = adoptions.length;
+                    animateCounter('totalAdoptions', adoptions.length);
+                })
+                .catch(error => {
+                    console.error('Error loading adoptions:', error);
+                    document.getElementById('totalAdoptions').textContent = '350+';
+                });
+        }
+
+        function loadFeaturedPets() {
+            console.log('🐾 Loading featured pets...');
+
+            fetch('http://localhost:8080/api/pets')
+                .then(response => response.json())
+                .then(pets => {
+                    displayFeaturedPets(pets.slice(0, 3)); // Show first 3 pets
+                })
+                .catch(error => {
+                    console.error('Error loading featured pets:', error);
+                    showFeaturedPetsError();
+                });
+        }
+
+        function displayFeaturedPets(pets) {
+            const grid = document.getElementById('featuredPetsGrid');
+            
+            if (pets.length === 0) {
+                grid.innerHTML = '<div class="error-message">No pets available at the moment. Check back soon!</div>';
+                return;
+            }
+
+            grid.innerHTML = pets.map(pet => `
+                <div class="pet-card">
+                    <div class="pet-image">
+                        🐾
+                    </div>
+                    <div class="pet-info">
+                        <h3>${pet.pet_name}</h3>
+                        <p class="pet-details">${pet.pet_type} • ${pet.age}</p>
+                        <p>Beautiful ${pet.breed} looking for a loving home</p>
+                        <div class="pet-tags">
+                            <span class="tag">${pet.pet_type}</span>
+                            <span class="tag">${pet.breed}</span>
+                        </div>
+                        <button class="adopt-btn" onclick="viewPet('${pet.pet_id}')">
+                            Learn More About ${pet.pet_name}
+                        </button>
+                    </div>
+                </div>
+            `).join('');
+        }
+
+        function showFeaturedPetsError() {
+            const grid = document.getElementById('featuredPetsGrid');
+            grid.innerHTML = `
+                <div class="error-message">
+                    <p>Unable to load pets at the moment.</p>
+                    <button onclick="loadFeaturedPets()" class="btn btn-primary" style="margin-top: 1rem;">Try Again</button>
+                </div>
+            `;
+        }
+
+        function viewPet(petId) {
+            window.location.href = `adoption.html#pet-${petId}`;
+        }
+
+        function animateCounter(elementId, finalValue) {
+            const element = document.getElementById(elementId);
+            let currentValue = 0;
+            const increment = Math.ceil(finalValue / 50);
+            
+            const timer = setInterval(() => {
+                currentValue += increment;
+                if (currentValue >= finalValue) {
+                    currentValue = finalValue;
+                    clearInterval(timer);
+                }
+                element.textContent = currentValue;
+            }, 40);
+        }
+
+        // Smooth scrolling for anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    </script>
+</body>
+</html>
